@@ -1,0 +1,16 @@
+#!/bin/sh
+
+imgs=`ls out/img*.txt`
+logo=hotlogo.rom.txt
+
+cp /dev/null $logo
+
+for img in $imgs
+do
+  cat $img | head -39 | tail -1 | cut -c3- >> $logo
+done
+
+cat $logo | awk '{gsub(" ","\n");print$0}' > tmp
+
+mv tmp $logo
+
