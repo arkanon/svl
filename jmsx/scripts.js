@@ -1,6 +1,6 @@
 /* scripts.js */
 
-  var romdir = 'rom';
+  var romdir = 'https://github.com/arkanon/svl/tree/gh-pages/jmsx/rom';
   var romext = '.rom';
   var defrom = 'hero';
   var fstrom = 'basic';
