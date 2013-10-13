@@ -1,0 +1,79 @@
+/* style.css */
+
+    html
+    {
+      text-align: center;
+    }
+
+    body
+    {
+      background: black;
+      display: inline-block;
+    }
+
+    #emulator
+    {
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    a,
+    a:visited
+    {
+      color: white;
+    }
+
+    a
+    {
+      width: 70px;
+      float: right;
+      text-align: right;
+      outline: none;
+      text-decoration: none;
+    }
+
+    #rom
+    {
+    }
+
+    #helpb
+    {
+      width: 70px;
+      float: left;
+      text-align: center;
+    }
+
+    #helpt h1
+    {
+      margin: 0 0 0 17px;
+    }
+
+    #helpt
+    {
+      text-align: left;
+      background: white;
+      color: black;
+      white-space: pre;
+      font-family: sans-serif;
+      position: absolute;
+      top: 50px;
+      width: 840px;
+      margin-left: -165px;
+      display: none;
+    }
+
+    #helpt img
+    {
+      background: black;
+      width: 800px;
+    }
+
+    #cover
+    {
+      position: absolute;
+      top: 8px;
+      left: 6px;
+      width: 250px;
+    }
+
+/* EOF */
