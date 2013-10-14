@@ -1,0 +1,7 @@
+<script>
+  window.onload = function()
+  {
+    var parms = location.search.substr(1).split('+');
+    top.document.getElementById(parms[0]).innerHTML = parms[1];
+  }
+</script>

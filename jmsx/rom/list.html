@@ -1,0 +1,58 @@
+<script>
+
+  window.onload = function()
+  {
+    var dir        = document.createElement('iframe');
+        dir.src    = '.';
+        dir.onload = function()
+        {
+          var parms   = location.search.substr(1).split('+');
+          var re      = new RegExp('[.]' + parms[1] + '$');
+          var c       = dir.contentWindow.document.body.innerHTML;
+              c       = c.replace(/<[^>]+>/g,'|');
+              c       = c.split('|');
+              c.grep  = grep;
+              c       = c.grep(re);
+              c       = c.map(function(el){return el.split('.')[0]});
+          var a       = document.createElement('a');
+              a.href  = document.referrer;
+          var path    = parms[0].substr(0,1) == '/' ? '' : a.pathname.dirname();
+          var out     = document.createElement('iframe');
+              out.src = a.protocol + '//' + a.host + path + '/' + parms[0] + '?' + parms[2] + '+' + c;
+              document.body.appendChild(out);
+        }
+        document.body.appendChild(dir);
+  }
+
+  var grep = function(pattern, invert)
+  // <http://gist.github.com/931857>
+  {
+    invert  = invert || false;
+    var ret = [];
+    if (this.filter)
+       ret = this.filter
+       (
+         function(element)
+         {
+           var b = element.match(pattern);
+           return b && !invert || invert && !b;
+         }
+       );
+    else
+       for(var n in this)
+       {
+         var element = this[n];
+         if (element.match && typeof element.match == 'function')
+         {
+           var b = element.match(pattern);
+           if (b && !invert || invert && !b) ret.push(element);
+         }
+       }
+    return ret;
+  }
+
+  // <http://planetozh.com/blog/2008/04/javascript-basename-and-dirname/>
+  String.prototype.basename = function() { return this.replace(/\\/g,'/').replace( /.*\//      , '' ) }
+  String.prototype.dirname  = function() { return this.replace(/\\/g,'/').replace( /\/[^\/]*$/ , '' ) }
+
+</script>
