@@ -1,0 +1,17 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <path
+   fill-rule = "evenodd"
+   transform = "translate(0 16) scale(1 -1)"
+   d         = "
+                M  2 1
+                v  1 h  1 v  1 h  1 v  1 h -1 v  4 h  1 v  1 h -1 v  1 h -1 v  1 h  2 v -1 h  2 v  1 h  1 v  1 h -1 v  2 h  1 v  1
+                h  2
+                v -1 h  1 v -2 h -1 v -1 h  1 v -1 h  2 v  1 h  2 v -1 h -1 v -1 h -1 v -1 h  1 v -4 h -1 v -1 h  1 v -1 h  1 v -1
+                h -2 v  2 h -1 v -1 h -2 v -1
+                h -2
+                v  1 h -2 v  1 h -1 v -2 h -2
+                M  8  7
+                v  1 h  1 v -1 h -1
+               "
+  />
+</svg>
