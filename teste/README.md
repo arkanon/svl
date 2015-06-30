@@ -2,7 +2,7 @@ Testes
 ======
 
 O diretório de testes 'svl' contém alguns algoritmos em código logo no dialeto svl, que, interpretados pelo navegador, geraram imagens em svg armazenadas nos arquivos do diretório 'svg'.
-Esses arquivis podem ser abertos em qualquer navegador moderno ou editor de imagens vetoriais, em especial o [Inkscape](http://inkscape.org).
+Esses arquivos svg podem ser abertos em qualquer navegador moderno ou editor de imagens vetoriais, em especial o [Inkscape](http://inkscape.org).
 
 Classes de testes
 -----------------
