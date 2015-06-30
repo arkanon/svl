@@ -1,0 +1,31 @@
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" id="raiz" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 300 300">
+
+<!--
+  Scalable Vector Logo - SVL
+  Arkanon <arkanon@lsd.org.br>
+  v0.16 - 2014/03/02 (Sun) 22:06:40 (BRS)
+-->
+
+  <defs>
+    <circle id="def_ponto" cx="0" cy="0" r=".5"/>
+    <path id="def_tat" transform="translate(-8.5 -7.5)" fill-rule="evenodd" d="        M  2 1        v  1 h  1 v  1 h  1 v  1 h -1 v  4 h  1 v  1 h -1 v  1 h -1 v  1 h  2 v -1 h  2 v  1 h  1 v  1 h -1 v  2 h  1 v  1        h  2        v -1 h  1 v -2 h -1 v -1 h  1 v -1 h  2 v  1 h  2 v -1 h -1 v -1 h -1 v -1 h  1 v -4 h -1 v -1 h  1 v -1 h  1 v -1        h -2 v  2 h -1 v -1 h -2 v -1        h -2        v  1 h -2 v  1 h -1 v -2 h -2        M  8  7        v  1 h  1 v -1 h -1       "/>
+  </defs>
+
+  <g id="tela" transform="translate(150,150) scale(1,-1)">
+    <rect id="fundo" width="300" height="300" x="-150" y="-150" fill="#000000" fill-opacity="1"/>
+    <image id="logo" xlink:href="svl-logo.svg#layer1" width="1000" height="1000" transform="translate(-147,147) scale(0.08) scale(1,-1)" opacity="1" style="visibility:visible"/>
+    <image id="validate" xlink:href="w3c-svg-1.1.svg#layer1" width="1000" height="1000" transform="scale(0.5) translate(214,-279) scale(1,-1)" opacity="1" style="visibility:visible"/>
+    <a id="save" xlink:href="">
+      <image id="floppy" xlink:href="save_as.svg" x="0" y="0" width="150" height="150" transform="scale(0.4) scale(1,-1)"/>
+    </a>
+  <path d="M 0 0 L 0 0" stroke="#ffffff" stroke-width="1" stroke-opacity="1"/><path d="M -110 -110 L -36.66666666666667 -110" stroke="#ffffff" stroke-width="0.1" stroke-opacity="1"/><path d="M -36.66666666666667 -110 L 0 -46.49147038914116" stroke="#ffffff" stroke-width="0.1" stroke-opacity="1"/><path d="M 0 -46.49147038914116 L 36.66666666666667 -110" stroke="#ffffff" stroke-width="0.1" stroke-opacity="1"/><path d="M 36.66666666666667 -110 L 110 -110" stroke="#ffffff" stroke-width="0.1" stroke-opacity="1"/><use id="tat_0" fill="#ffff00" fill-opacity="0.2" style="visibility:visible" xlink:href="#def_tat" transform="translate(110,-110) rotate(-90) scale(0.5,0.5)"/></g>
+
+  <script id="rom-0" type="application/javascript" xlink:href="rom.0.auxiliar.js"/>
+  <script id="rom-1" type="application/javascript" xlink:href="rom.1.geral.js"/>
+  <script id="rom-2" type="application/javascript" xlink:href="rom.2.listas.js"/>
+  <script id="rom-3" type="application/javascript" xlink:href="rom.3.matematica.js"/>
+  <script id="rom-4" type="application/javascript" xlink:href="rom.4.grafico-nao-tat.js"/>
+  <script id="rom-5" type="application/javascript" xlink:href="rom.5.grafico-tat.js"/>
+  <script id="rom-z" type="application/javascript" xlink:href="rom.z.boot.js"/><script xlink:href="teste/koch.svl" type="application/javascript"/>
+
+</svg>

@@ -1,0 +1,55 @@
+
+/////////////////// [ ' COMANDO__________________________ ' , 'SAÍDA PREVISTA' ]
+
+   var comandos = [
+                    [ ' mo(        versão (                ) ) ' , '"Scalable Vector Logo versão 0.9"' ],
+                    [ ' mo(    primitivas (                ) ) ' , '[ "apf" "apt" "arctan" ... "éprocedimento" "évazia" "évisível" ]' ],
+
+                    [ ' mo(    éprimitiva ( "pf"           ) ) ' , 'verd'  ],
+                    [ ' mo(    éprimitiva ( "parafrente"   ) ) ' , 'falso' ],
+
+                    [ ' mo(     diferença ( 2 , 3          ) ) ' , '-1' ],
+                    [ ' mo(     quociente ( 2 , 3          ) ) ' , '0.6666666666666666' ],
+                    [ ' mo(   troquesinal ( 5              ) ) ' , '-5'    ],
+                    [ ' mo(   troquesinal ( -5             ) ) ' , ' 5'    ],
+
+                    [ ' mo(    sorteieaté ( 1              ) ) ' , '0 | 1' ],
+                    [ ' mo(    sorteieaté ( 50             ) ) ' , ''      ],
+
+                    [ ' mo(          soma ( 1,1,1,1,1,1,1  ) ) ' , '7'     ],
+                    [ ' mo(       produto ( 1,2,3,4,5,6,7  ) ) ' , '5040'  ],
+
+                    [ ' mo(           nel (  [2,[3,4],5,6] ) ) ' , '4'             ],
+                    [ ' mo(           nel (    [2,3,4,5,6] ) ) ' , '5'             ],
+                    [ ' mo(           nel (    "23456"     ) ) ' , '5'             ],
+                    [ " mo(           pri (  ['a','b','c'] ) ) " , '"a"'           ],
+                    [ ' mo(           pri (  ["a","b","c"] ) ) ' , '"a"'           ],
+                    [ ' mo(           pri (  ["2","3","4"] ) ) ' , '"2"'           ],
+                    [ ' mo(           pri (    [2,3,4,5,6] ) ) ' , '2'             ],
+                    [ ' mo(           pri (    "23456"     ) ) ' , '"2"'           ],
+                    [ ' mo(           pri (     23456      ) ) ' , '"2"'           ],
+                    [ ' mo(           ult (    [2,3,4,5,6] ) ) ' , '6'             ],
+                    [ ' mo(           ult (    "23456"     ) ) ' , '"6"'           ],
+                    [ ' mo(            sp (    [2,3,4,5,6] ) ) ' , '[ 3 4 5 6 ]'   ],
+                    [ ' mo(            sp (    "23456"     ) ) ' , '"3456"'        ],
+                    [ ' mo(            su (    [2,3,4,5,6] ) ) ' , '[ 2 3 4 5 ]'   ],
+                    [ ' mo(            su (    "23456"     ) ) ' , '"2345"'        ],
+                    [ ' mo(      elemento ( 3, [2,3,4,5,6] ) ) ' , '4'             ],
+                    [ ' mo(      elemento ( 3, "23456"     ) ) ' , '"4"'           ],
+
+                    [ ' mo(            ji (  0  , [1,2]    ) ) ' , '[ 0 1 2 ]'     ],
+                    [ ' mo(            ji ( [0] , [1,2]    ) ) ' , '[ [ 0 ] 1 2 ]' ],
+                    [ ' mo(            jf (  0  , [1,2]    ) ) ' , '[ 1 2 0 ]'     ],
+                    [ ' mo(            jf ( [0] , [1,2]    ) ) ' , '[ 1 2 [ 0 ] ]' ],
+
+                    [ ' mo( évazia        ( []             ) ) ' , 'verd'  ],
+                    [ ' mo( évazia        ( ""             ) ) ' , 'verd'  ],
+                    [ ' mo( temvalor      ( "nonecziste"   ) ) ' , 'falso' ],
+                    [ ' mo( temvalor      ( "cf"           ) ) ' , 'verd'  ],
+                    [ ' mo( élista        ( [2,3,4,5,6]    ) ) ' , 'verd'  ],
+                    [ ' mo( épalavra      ( "23456"        ) ) ' , 'verd'  ],
+                    [ ' mo( énúmero       ( 23456          ) ) ' , 'verd'  ],
+                  ];
+
+   AUX_compare(15,comandos);
+

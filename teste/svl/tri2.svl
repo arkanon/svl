@@ -1,0 +1,43 @@
+
+   dt();
+   mudeel(.2);
+
+   mudelimites( [-250,-150] , [250,150] );
+
+   var n;
+
+   un(); pc();
+   mudepos([-200,50,0]); ul(); mudecl(8);
+   n = 3; cpc(10);
+   rpe(50); prisma(n,50,200);
+
+   un(); pc();
+   mudepos([50,50,0]); ul(); mudecl(5);
+   n = 4; cpc(10);
+   rpe(50); prisma(n,50,200);
+
+   un(); pc();
+   mudepos([50,-50,0]); ul(); mudecl(10);
+   n = 5; cpc( 0);
+   rpe(50); prisma(n,50,200);
+
+   un(); pc();
+   mudepos([-200,-50,-2000]); ul(); mudecl(15);
+   n = 6; cpc(10);
+   rpe(50); prisma(n,50,200);
+
+   un(); pc();
+   mudepos([-200,-50,0]); ul(); mudecl(12);
+   n = 6; cpc(10);
+   rpe(50); prisma(n,50,200);
+
+   function prisma(n, a, b)
+   {
+     repita( n, function()
+     {
+       repita( 2, function(){ pf(a); pd(90); pf(b); pd(90); } );
+       pf(a);
+       cpc(360/n);
+     } );
+   }
+

@@ -1,0 +1,36 @@
+
+   if (não(éprocedimento("eixos"))) carregue("teste/biblioteca.svl");
+
+   window.onload = tudo;
+
+   function tudo()
+   {
+
+     eixos(7, .5, 1);
+
+     mudelimites( [50,50] , [100,100] , verd() );
+     eixos(5, 3, .5);
+
+/*
+     mudecl(5);
+     un();
+     mudepos([min_coorx(),min_coory()]);
+     ul();
+     mudepos([min_coorx(),max_coory()]);
+     mudepos([max_coorx(),max_coory()]);
+     mudepos([max_coorx(),min_coory()]);
+     mudepos([min_coorx(),min_coory()]);
+     mudecl(15);
+*/
+
+     mudepos([60,60]);
+     repita(4, function(){ pf(30); pd(90); } );
+     mudeot(.5);
+     mudect(8);
+
+     mudelimites( [-200,-200] , [200,200] , verd() );
+
+//   alert( primitivas().length + ' - ' + primitivas() );
+
+   }
+

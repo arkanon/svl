@@ -1,0 +1,21 @@
+
+   carregue("teste/biblioteca.svl");
+
+   window.onload = function()
+   {
+
+     eixos(7, .5, 1);
+
+     var l   = 50;
+     var n   = 6;
+     var ai  = 180 - 360/n;
+     var av1 = 180 - ai;	// =      360/n
+     var av2 = 180 - ai/2;	// = 90 + 180/n
+     mudect(8);
+     mudeot(.5);
+     mudeel(1.5);
+     repita( n  , function(){ pf(l); pd(av1); } );
+     repita( n/2, function(){ ul(); mudecl(5); mudeel(.5); pf(l); mudeel(1.5); mudecl(2); pd(av2); ul(); pf(2*l); pd(av2); } );
+
+   }
+

@@ -1,0 +1,22 @@
+
+   dt();
+   mudeel(.2);
+
+   cpb(30);
+    pd( 0);
+   rpd(30);
+
+   var delay = new AUX_timestamp(0,0,0,0);
+   delay.StartTiming();
+   esfera(10); // 13.08s
+   alert("Tempo de execução: "+delay.EndTiming()+" segundos");
+
+   function esfera(espacamento)
+   {
+     repita( 360/(2*espacamento), function()
+     {
+       repita( 360, function(){ pf(1); cpb(1); } );
+       pd(espacamento);
+     } );
+   }
+

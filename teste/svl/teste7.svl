@@ -1,0 +1,22 @@
+
+   carregue("teste/biblioteca.svl");
+
+   window.onload = function()
+   {
+     eixos(7, .5, 1);
+    tudo();
+   }
+
+   function tudo()
+   {
+     mudecf(6);
+     mudect(15);
+     mudeot(.3);
+     pd(140);
+     repita( 5, function(){ mudeol(.3); mudecl(15); pf(30); pd(360/5); mudett(dç(2)/180); mudecl(5); mudeol(1); carimbe(); } );
+     mudett(1);
+     pe(140);
+     mudecl(cf());
+     pf(50);
+   }
+

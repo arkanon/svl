@@ -1,0 +1,10 @@
+
+  alert(1); try{alert(éprocedimento( p    ))}catch(e){alert(e)}; // erro
+  alert(2); try{alert(éprocedimento( p()  ))}catch(e){alert(e)}; // erro
+  alert(3); try{alert(éprocedimento('p'   ))}catch(e){alert(e)}; // falso
+  alert(4); try{alert(éprocedimento('p()' ))}catch(e){alert(e)}; // erro
+  alert(5); try{alert(éprocedimento( at   ))}catch(e){alert(e)}; // verd
+  alert(6); try{alert(éprocedimento( at() ))}catch(e){alert(e)}; // falso
+  alert(7); try{alert(éprocedimento('at'  ))}catch(e){alert(e)}; // verd
+  alert(8); try{alert(éprocedimento('at()'))}catch(e){alert(e)}; // falso
+

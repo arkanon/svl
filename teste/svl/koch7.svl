@@ -1,0 +1,45 @@
+
+   var msg;
+   msg  = "A execução do programa demorará aproximadamente 3min 14s.\n";
+   msg += "Enquanto isso o browser vai parecer ter congelado.\n\n";
+   msg += "Cancele ou clique em [OK] e aguarde.\n\n";
+   if (confirm(msg))
+   {
+     var delay = new AUX_timestamp(0,0,0,0);
+     delay.StartTiming();
+     tudo();
+     alert("Tempo de execução: "+delay.EndTiming()+" segundos");
+   }
+
+   function tudo()
+   {
+        mudett(.5);
+        mudect(10);
+        mudeot(.2);
+        mudeel(.02);
+        un();
+        pt(max_coorx()-40);
+        pd(90);
+        pt(max_coorx()-40);
+        ul();
+        koch(7, 2*(max_coorx()-40), 5); // 194.801s
+   }
+
+   function koch(n, l, i)
+   {
+     if (i<=0)
+     {
+       pf(l);
+     }
+     else
+     {
+       var ai = 180 - 360/n;
+       var av = 180 - ai; // = 360/n
+       koch(n,l/3,i-1);
+       pe(ai);
+       repita( n-1, function(){ koch(n, l/3, i-1); pd(av); } );
+       pe(180);
+       koch(n,l/3,i-1);
+     }
+   }
+

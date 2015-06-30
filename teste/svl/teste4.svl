@@ -1,0 +1,23 @@
+
+   carregue("teste/biblioteca.svl");
+
+   window.onload = function()
+   {
+     eixos(7, .5, 1);
+     tudo();
+   }
+
+   function tudo()
+   {
+     pd(30);
+     mudecl(8);
+     // PROBLEMA DE ESCOPO: se a função 'retângulo' for definida dentro da função 'tudo' pode ser chamada diretamente de dentro dela,
+     //                     mas não de dentro da primitiva 'repita', que usa a função 'eval' do js para executar a lista de comandos.
+     repita( 24, function(){ retângulo(50,50); pd(15); } );
+     pe(30);
+     mudecl(12);
+     mudeel(3);
+     mudeol(.5);
+     pf(135);
+   }
+

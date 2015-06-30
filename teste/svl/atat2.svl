@@ -1,0 +1,15 @@
+
+   var variação = 10;
+   mudeqt(360/variação);
+   atat(todas());
+   alert(mo(quem()));
+   mudeel(2);
+   at();
+   cada( function()
+   {
+     mudett(1-50/((4+quem())*variação));
+     mudecl(quem());
+     pd(quem()*variação);
+     pf(quem()*variação/2.5)
+   } );
+

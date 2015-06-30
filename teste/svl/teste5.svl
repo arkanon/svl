@@ -1,0 +1,24 @@
+
+   var msg;
+   msg  = "A execução do programa demorará aproximadamente 2min 8s.\n";
+   msg += "Enquanto isso o browser vai parecer ter congelado.\n\n";
+   msg += "Cancele ou clique em [OK] e aguarde.\n\n";
+   // otimizar de duas formas:
+   //    usando objeto 'circle' quando repita for 360
+   //    definindo um círculo, colocando em 'defs' e reutilizando
+   if (confirm(msg))
+   {
+     var delay = new AUX_timestamp(0,0,0,0);
+     delay.StartTiming();
+     tudo();
+     alert("Tempo de execução: "+delay.EndTiming()+" segundos");
+   }
+
+   function tudo()
+   {
+     mudecl(10);
+     mudeel(.1);
+     repita( 24*3, function(){ repita( 360, function(){ pf(1); pd(1); } ); pd(15/3); } ); // 128.498s
+     dt();
+   }
+

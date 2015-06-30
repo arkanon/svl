@@ -1,0 +1,15 @@
+
+   try { alert(temvalor(pessoa)) } catch(erro) { alert(erro) }; // ReferenceError: pessoa is not defined
+
+   alert(temvalor("pessoa"));	// false
+
+   var pessoa = "eu";
+
+   alert(temvalor(pessoa));	// false
+   alert(temvalor("pessoa"));	// true
+
+   var eu = "paulo";
+
+   alert(temvalor(pessoa));	// true
+   alert(temvalor("pessoa"));	// true
+

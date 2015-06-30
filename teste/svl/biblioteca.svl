@@ -1,0 +1,43 @@
+
+//alert("biblioteca: "+document.location.href);
+
+   function eixos(cor,espessura,opacidade)
+   {
+
+//   alert(mo([cor,[min_coorx(),min_coory()],[max_coorx(),max_coory()]]));
+
+     var    cl_velho = cl();
+     var    el_velho = el();
+     var    ol_velho = ol();
+     var usava_lápis = lápis();
+     var coorx_velho = coorx();
+     var coory_velho = coory();
+//----------
+     mudecl(cor);
+     mudeel(espessura);
+     mudeol(opacidade);
+     un();
+           mudepos([min_coorx(),0]);
+//----------
+     ul(); mudepos([max_coorx(),0]); un();
+           mudepos([0,min_coory()]);
+     ul(); mudepos([0,max_coory()]); un();
+//----------
+           mudepos([coorx_velho,coory_velho]);
+     if (usava_lápis) ul(); else un();
+     mudeol(ol_velho);
+     mudeel(el_velho);
+     mudecl(cl_velho);
+   }
+
+
+
+   function retângulo(l1,l2)
+   {
+     repita( 2, function()
+     {
+       pf(l1); pd(90);
+       pf(l2); pd(90);
+     } );
+   }
+

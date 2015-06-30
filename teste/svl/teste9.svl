@@ -1,0 +1,129 @@
+
+// tudo();
+
+
+// repita( 4, function(){ pf(50); pd(90); } );
+
+
+
+/*
+
+   var timerObject = function()
+   // <http://www.novogeek.com/post/Scope-problems-with-JavaScript-setInterval-setTimeout-Use-closures!.aspx>
+   {
+     var timerId;
+     this.startTimer = function()
+     {
+       var inst = this;
+       timerId = setInterval( function(){ inst.task() }, 1000);
+     }
+     this.stopTimer = function(){ clearInterval(timerId) }
+     this.name = function()
+     // <http://stackoverflow.com/a/789720>
+     { 
+       for (var name in this.global) if (this.global[name] == this) return name ; // search through the global object for a name that resolves to this object
+     } 
+   }
+
+   timerObject.prototype.global = this;
+
+   var timer1 = new timerObject();
+   timer1.counter = 5;
+   timer1.task    = function()
+   {
+
+     var timer2 = new timerObject();
+     timer2.counter = 3;
+     timer2.task    = function()
+     {
+       AUX_log(this.name() + ' - ' + this.counter);
+       if (--this.counter<1) this.stopTimer();
+     }
+     timer2.startTimer();
+
+     AUX_log(this.name() + ' - ' + this.counter);
+     if (--this.counter<1) this.stopTimer();
+   }
+   timer1.startTimer();
+
+*/
+
+
+
+   var i = 1;
+   interval
+   (
+
+     function()
+     {
+
+       j = 1;
+       interval
+       (
+         function()
+         {
+           AUX_log('i=' + i + ' , j=' + j);
+           j++;
+         }, 1000, 3
+       );
+
+       i++;
+
+     }, 1000, 5
+
+   );
+
+
+
+   function interval(func, wait, times)
+   {
+     var interv = function()
+     {
+       if (typeof times === "undefined" || times-- > 0)
+       {
+         setTimeout(interv, wait);
+         try
+         {
+           func.call(null);
+         }
+         catch(e)
+         {
+           times = 0;
+           throw e.toString();
+         }
+       }
+     }
+     setTimeout(interv, wait);
+   }
+
+
+
+   function tudo()
+   {
+
+     AUX_execute( function()
+     {
+
+       dt();
+       at();
+       repita( 4, function(){ pf(50); pd(90); } );
+       pe(45);
+       mudedç(dçpara([30,-20]));
+       mudepos([10,40]);
+
+     } , verd() );
+
+   }
+
+   function t()
+   {
+
+     dt();
+     at();
+     repita(4, function(){ pf(50); pd(90); } );
+     pe(45);
+     mudedç(dçpara([30,-20]));
+     mudepos([10,40]);
+
+   }
+

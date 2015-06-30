@@ -1,0 +1,36 @@
+
+   dt();
+   mudeel(.2);
+
+   cpc(100);
+    pd( 45);
+   rpe(  0);
+   casa(50);
+
+   function casa(a)
+   {
+     // corpo
+     mudecl(8);
+     prisma( 4, 1.0*a, 2.75*a );
+
+     un();
+     pt(0.25*a); pd(90);
+     pt(0.25*a); pe(90);
+     cpb(60);
+     ul();
+
+     // telhado
+     mudecl(5);
+     prisma( 3, 1.5*a, 3.25*a );
+   }
+
+   function prisma(n, a, b)
+   {
+     repita( n, function()
+     {
+       repita( 2, function(){ pf(a); pd(90); pf(b); pd(90); } );
+        pf(a);
+       cpc(360/n);
+     } );
+   }
+

@@ -1,0 +1,18 @@
+
+   atat([0,1,2]);
+   dt();
+   mudeel(.2);
+   sótat( 0, function(){ rpe( 45);  pd(45); prisma(3,50,100); } );
+   sótat( 1, function(){ rpd(135); cpc( 0); prisma(4,50,100); } );
+   sótat( 2, function(){ un(); mudepos([50,150,-2000]); ul(); rpd(30); cpc(0); prisma(5,50,100); } );
+
+   function prisma(n, a, b)
+   {
+     repita( n, function()
+     {
+       repita( 2, function(){ pf(a); pd(90); pf(b); pd(90); } );
+       pf(a);
+       cpc(360/n);
+     } );
+   }
+
