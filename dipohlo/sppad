@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# = 0 ]
+then
+  echo "Usage: $(basename $0) <hotlogo file>"
+  exit
+fi
+
+nativ=$(dirname $1)/$(basename $1 .hl)
+
+cat $1 | tr "\n" "|" | sed "s/§|/\t/g;s/|//g" >| $1-tmp
+
+fs=$(wc -c $1-tmp | cut -d\  -f1)
+bs=128
+fs=$[$bs-$fs%$bs]
+
+( cat $1-tmp && printf "% ${fs}s" ) >| $nativ
+
+rm $1-tmp
+
