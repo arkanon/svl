@@ -11,5 +11,5 @@ For now:
 - some .svl [tests](https://goo.gl/R7gsWx) saved in .svg files.
 
 And:
-- some [screen recordings](https://goo.gl/kGfiWc) in YouTube of HotLogo projects made between 1988 and 1991, running mainly in [openMSX](http://openmsx.org/)
+- some [screen recordings](https://goo.gl/kGfiWc) in YouTube of HotLogo projects made between 1988 and 1991, running mainly in [openMSX](http://openmsx.org/).
 
