@@ -10,12 +10,12 @@
 
     NAME="Portable HotLogo Distribution - PHoLD"
      MAJ="0.11.0"
-     BLD=$(($(tail -n1 .build-history 2> /dev/null | cut -f1)+1)) # update build number
+     BLD=$(($(tail -n1 build-history 2> /dev/null | cut -f1)+1)) # update build number
      VER="$MAJ-$BLD"
 
      rpm="ftp://rpmfind.net/linux/fedora/linux/development/rawhide"
       sf="http://downloads.sourceforge.net/openmsx"
-    pref="openmsx-$ver"
+    pref="openmsx-$MAJ"
 
   # emulador
   arch[0]="4.fc23.i686"   ; pkg[0]="$rpm/i386/os/Packages/o/$pref-4.fc23.i686.rpm"
@@ -30,11 +30,11 @@
 
   export TIMEFORMAT='  ELAPSED TIME: %lR'
 
-  echo -e "$BLD\t$(LC_TIME=C date +'%Y/%m/%d (%a) %H:%M:%S %Z')" >> .build-history
+  echo -e "$BLD\t$(LC_TIME=C date +'%Y/%m/%d (%a) %H:%M:%S %Z')" >> build-history
 
-  mkdir -p $ver
+  mkdir -p $MAJ
   (
-    cd $ver
+    cd $MAJ
 
     mkdir -p bin
     mkdir -p share
@@ -89,21 +89,21 @@
 
     )
 
-    # ldd usr/bin/openmsx | grep 'not found'
-    # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by usr/bin/openmsx)
-    #   libSDL_ttf-2.0.so.0 => not found
-    #   libpng16.so.16 => not found
+  # # ldd usr/bin/openmsx | grep 'not found'
+  # # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by usr/bin/openmsx)
+  # #   libSDL_ttf-2.0.so.0 => not found
+  # #   libpng16.so.16 => not found
 
-    mkdir -p dep
-    (
-      cd dep
+  # mkdir -p dep
+  # (
+  #   cd dep
 
-      for i in $(seq ${#dep[*]})
-      do
-        time wget -c ${dep[$((i-1))]}
-      done
+  #   for i in $(seq ${#dep[*]})
+  #   do
+  #     time wget -c ${dep[$((i-1))]}
+  #   done
 
-    )
+  # )
 
   )
 
