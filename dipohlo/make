@@ -5,6 +5,7 @@
 # Build Script
 #
 # Arkanon <arkanon@lsd.org.br>
+# 2015/07/03 (Sex) 09:13:11 BRS
 # 2015/07/03 (Sex) 02:35:49 BRS
 # 2015/07/02 (Qui) 00:12:35 BRS
 # 2015/07/01 (Qua) 00:53:04 BRT
@@ -122,7 +123,7 @@
             cd tmp
 
             7z e -so ../${url##*/} 2> /dev/null | cpio -idm --quiet
-            mv -i usr/lib/* ../../lib-$arch
+            mv -i usr/lib*/* ../../lib-$arch
 
           )
           rm -r tmp
@@ -148,6 +149,8 @@
   # # GLIBCXX_3.4.21
 
   )
+
+exit
 
 #-- AQUI --#
 
