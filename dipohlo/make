@@ -5,6 +5,7 @@
 # Build Script
 #
 # Arkanon <arkanon@lsd.org.br>
+# 2015/07/04 (Sáb) 03:09:37 BRS
 # 2015/07/03 (Sex) 09:13:11 BRS
 # 2015/07/03 (Sex) 02:35:49 BRS
 # 2015/07/02 (Qui) 00:12:35 BRS
@@ -13,21 +14,25 @@
 # 2014/03/05 (Wed) 22:21:10 BRS
 # 2013/04/15 (Seg) 05:49:49 BRS
 
-    NAME="Portable HotLogo Distribution - PHoLD"
-     MAJ="0.11.0"
-     BLD=$(($(tail -n1 build-history 2> /dev/null | cut -f1)+1)) # update build number
-     VER="$MAJ-$BLD"
 
-     rpm="ftp://rpmfind.net/linux/fedora/linux/development/rawhide"
-      sf="http://downloads.sourceforge.net/openmsx"
-    pref="openmsx-$MAJ"
 
-  # emulador
-  arch[0]="4.fc23.i686"   ; pkg[0]="$rpm/i386/os/Packages/o/$pref-4.fc23.i686.rpm"
-  arch[1]="4.fc23.x86_64" ; pkg[1]="$rpm/x86_64/os/Packages/o/$pref-4.fc23.x86_64.rpm"
-  arch[2]="win.x86"       ; pkg[2]="$sf/$pref-windows-vc-x86-bin.zip"
-  arch[3]="win.x64"       ; pkg[3]="$sf/$pref-windows-vc-x64-bin.zip"
-  arch[4]="mac.x86_64"    ; pkg[4]="$sf/$pref-mac-x86_64-bin.dmg"
+  NAME="DiPoHLo - Distribuição Portável do HotLogo"
+   MAJ="0.11.0"
+
+   rpm="ftp://rpmfind.net/linux/fedora/linux/development/rawhide"
+    sf="http://downloads.sourceforge.net/openmsx"
+  pref="openmsx-$MAJ"
+
+  # arquiteturas do emulador
+  arc[0]="x86"    ; pkg[0]="$rpm/i386/os/Packages/o/$pref-4.fc23.i686.rpm"
+  arc[1]="x64"    ; pkg[1]="$rpm/x86_64/os/Packages/o/$pref-4.fc23.x86_64.rpm"
+  arc[2]="w86"    ; pkg[2]="$sf/$pref-windows-vc-x86-bin.zip"
+  arc[3]="w64"    ; pkg[3]="$sf/$pref-windows-vc-x64-bin.zip"
+  arc[4]="m86_64" ; pkg[4]="$sf/$pref-mac-x86_64-bin.dmg"
+
+  typeset -A cls # classes de arquitetura
+  cls[x86]="i386"
+  cls[x64]="x86_64"
 
   # dependencias
   lib[0]="l/libstdc++-5.1.1-4.fc23"
@@ -36,7 +41,15 @@
   lib[3]="l/libGLEW-1.10.0-6.fc23"
   lib[4]="s/SDL_ttf-2.0.11-7.fc23"
 
-  export TIMEFORMAT='  ELAPSED TIME: %lR'
+  export      TIMEFORMAT='  ELAPSED TIME: %lR'
+  export LD_LIBRARY_PATH=$PWD/$MAJ/lib/$(uname -m | grep -q x86_64 && echo x64 || echo x86)
+
+  echo -e "\nLD_LIBRARY_PATH=$LD_LIBRARY_PATH\n"
+
+
+
+  BLD=$(($(tail -n1 build-history 2> /dev/null | cut -f1)+1)) # update build number
+  VER="$MAJ-$BLD"
 
   echo -e "$BLD\t$(LC_TIME=C date +'%Y/%m/%d (%a) %H:%M:%S %Z')" >> build-history
 
@@ -46,18 +59,22 @@
 
     touch v$MAJ
 
-    mkdir -p bin
-    mkdir -p share
+    for i in bin lib share
+    do
+      rm    -rf $i
+      mkdir -p  $i
+    done
 
-    mkdir -p pkg
+    mkdir -p .pkg
     (
-      cd pkg
+      cd .pkg
 
       for i in $(seq ${#pkg[*]})
       do
 
-          n=$((i-1))
-        url=${pkg[$n]}
+           n=$((i-1))
+         url=${pkg[$n]}
+        arch=${arc[$n]}
 
         echo ${url##*/}
 
@@ -67,28 +84,25 @@
         (
           cd tmp
 
-          case ${arch[$n]} in
+          case $arch in
 
-            *fc*)
-                  7z e -so ../${url##*/} 2> /dev/null | cpio -idm --quiet
-                  rm                          usr/share/openmsx/settings.xml
-                  mv etc/openmsx/settings.xml usr/share/openmsx
-                  mv usr/bin/openmsx          ../../bin/$pref-${arch[$n]}
-                  mv usr/share/openmsx/       ../../share/${arch[$n]}/
-                  ;;
+            x*) 7z e -so ../${url##*/} 2> /dev/null | cpio -idm --quiet
+                rm                            usr/share/openmsx/settings.xml
+                mv   etc/openmsx/settings.xml usr/share/openmsx
+                mv   usr/bin/openmsx          ../../bin/$pref-$arch
+                mv   usr/share/openmsx/       ../../share/$arch/
+                ;;
 
-            win*)
-                  7z x ../${url##*/} &> /dev/null
-                  mv codec/      share/
-                  mv openmsx.exe ../../bin/$pref-${arch[$n]}.exe
-                  mv share/      ../../share/${arch[$n]}/
-                  ;;
+            w*) 7z x ../${url##*/} &> /dev/null
+                mv   codec/      share/
+                mv   openmsx.exe ../../bin/$pref-$arch.exe
+                mv   share/      ../../share/$arch/
+                ;;
 
-            mac*)
-                  7z x ../${url##*/} &> /dev/null
-                  7z x 4.hfs         &> /dev/null
-                  mv openMSX/openMSX.app/ ../../bin/$pref-${arch[$n]}.app
-                  ;;
+            m*) 7z x ../${url##*/} &> /dev/null
+                7z x 4.hfs         &> /dev/null
+                mv   openMSX/openMSX.app/ ../../bin/$pref-$arch.app
+                ;;
 
           esac
 
@@ -99,14 +113,16 @@
 
     )
 
-    mkdir -p dep
+    mkdir -p .dep
     (
-      cd dep
+      cd .dep
 
-      for arch in i386 x86_64
+      for class in x86 x64
       do
 
-        mkdir -p ../lib-$arch
+        arch=${cls[$class]}
+
+        mkdir -p ../lib/$class
 
         for i in $(seq ${#lib[*]})
         do
@@ -123,7 +139,7 @@
             cd tmp
 
             7z e -so ../${url##*/} 2> /dev/null | cpio -idm --quiet
-            mv -i usr/lib*/* ../../lib-$arch
+            mv   usr/lib*/* ../../lib/$class
 
           )
           rm -r tmp
@@ -133,8 +149,6 @@
       done
 
     )
-
-    export LD_LIBRARY_PATH=$PWD/lib-i386
 
   # ldd bin/openmsx-0.11.0-4.fc23.i686 | grep 'not found'
   # # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.21 not found (required by usr/bin/openmsx)
@@ -150,12 +164,14 @@
 
   )
 
+  echo
+
 exit
 
 #-- AQUI --#
 
   (
-    cd ../pkg
+    cd ../.pkg
     prefix=http://www.msxarchive.nl/pub/msx/emulator/openMSX/System%20Roms/Gradiente
     curl -sOC- $prefix/expert_ddplus_basic-bios1.rom
     curl -sOC- $prefix/expert_ddplus_disk.rom
@@ -183,7 +199,7 @@ exit
      rm -r machines/*
      mv README Gradiente_Expert_DDPlus.xml machines
 
-     cp -a ../../pkg/*.rom systemroms
+     cp -a ../../.pkg/*.rom systemroms
 
   )
 
