@@ -5,7 +5,7 @@
 # Build Script
 #
 # Arkanon <arkanon@lsd.org.br>
-# 2015/07/04 (Sáb) 03:09:37 BRS
+# 2015/07/04 (Sáb) 03:41:25 BRS
 # 2015/07/03 (Sex) 09:13:11 BRS
 # 2015/07/03 (Sex) 02:35:49 BRS
 # 2015/07/02 (Qui) 00:12:35 BRS
@@ -41,10 +41,17 @@
   lib[3]="l/libGLEW-1.10.0-6.fc23"
   lib[4]="s/SDL_ttf-2.0.11-7.fc23"
 
-  export      TIMEFORMAT='  ELAPSED TIME: %lR'
-  export LD_LIBRARY_PATH=$PWD/$MAJ/lib/$(uname -m | grep -q x86_64 && echo x64 || echo x86)
+  bpath=$PWD/$MAJ/bin
+  lpath=$PWD/$MAJ/lib/$(uname -m | grep -q x86_64 && echo x64 || echo x86)
 
-  echo -e "\nLD_LIBRARY_PATH=$LD_LIBRARY_PATH\n"
+  export      TIMEFORMAT='  ELAPSED TIME: %lR'
+  export            PATH=$PATH:$bpath
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$lpath
+
+  echo
+  echo "export            PATH=\$PATH:$bpath"
+  echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$lpath"
+  echo
 
 
 
@@ -106,12 +113,24 @@
 
           esac
 
-        )
+        ) # tmp
         rm -r tmp
 
       done
 
-    )
+    ) # .pkg
+
+    # ldd bin/openmsx-0.11.0-4.fc23.i686 | grep 'not found'
+    # # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.21 not found (required by usr/bin/openmsx)
+    #
+    # strings /usr/lib/i386-linux-gnu/libstdc++.so.6 | grep GLIBC
+    # # GLIBCXX_3.4.20
+    #
+    # dpkg -S libstdc++.so.6
+    # apt-file -l search libstdc++.so.6
+    #
+    # strings lib-i386/libstdc++.so.6 | grep GLIBC
+    # # GLIBCXX_3.4.21
 
     mkdir -p .dep
     (
@@ -141,44 +160,27 @@
             7z e -so ../${url##*/} 2> /dev/null | cpio -idm --quiet
             mv   usr/lib*/* ../../lib/$class
 
-          )
+          ) # tmp
           rm -r tmp
 
         done
 
       done
 
-    )
+    ) # .dep
 
-  # ldd bin/openmsx-0.11.0-4.fc23.i686 | grep 'not found'
-  # # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.21 not found (required by usr/bin/openmsx)
-
-  # strings /usr/lib/i386-linux-gnu/libstdc++.so.6 | grep GLIBC
-  # # GLIBCXX_3.4.20
-
-  # dpkg -S libstdc++.so.6
-  # apt-file -l search libstdc++.so.6
-
-  # strings lib-i386/libstdc++.so.6 | grep GLIBC
-  # # GLIBCXX_3.4.21
-
-  )
-
-  echo
-
-exit
-
-#-- AQUI --#
-
-  (
-    cd ../.pkg
-    prefix=http://www.msxarchive.nl/pub/msx/emulator/openMSX/System%20Roms/Gradiente
-    curl -sOC- $prefix/expert_ddplus_basic-bios1.rom
-    curl -sOC- $prefix/expert_ddplus_disk.rom
+    prefix="http://www.msxarchive.nl/pub/msx/emulator/openMSX/systemroms/machines/gradiente"
+    time wget -qc $prefix/expert_ddplus_basic-bios1.rom
+    time wget -qc $prefix/expert_ddplus_disk.rom
     sha1sum *.rom
     # d6720845928ee848cfa88a86accb067397685f02  expert_ddplus_basic-bios1.rom
     # f1525de4e0b60a6687156c2a96f8a8b2044b6c56  expert_ddplus_disk.rom
-  )
+
+  ) # MAJ
+
+  echo
+
+exit #-- AQUI --#
 
   (
 
