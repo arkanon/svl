@@ -5,6 +5,7 @@
 # Build Script
 #
 # Arkanon <arkanon@lsd.org.br>
+# 2015/07/05 (Dom) 09:57:48 BRS
 # 2015/07/05 (Dom) 05:26:19 BRS
 # 2015/07/04 (Sáb) 03:41:25 BRS
 # 2015/07/03 (Sex) 09:13:11 BRS
@@ -25,11 +26,11 @@
   pref="openmsx-$MAJ"
 
   # arquiteturas do emulador
-  arc[0]="x86"    ; pkg[0]="$rpm/i386/os/Packages/o/$pref-4.fc23.i686.rpm"
-  arc[1]="x64"    ; pkg[1]="$rpm/x86_64/os/Packages/o/$pref-4.fc23.x86_64.rpm"
-  arc[2]="w86"    ; pkg[2]="$sf/$pref-windows-vc-x86-bin.zip"
-  arc[3]="w64"    ; pkg[3]="$sf/$pref-windows-vc-x64-bin.zip"
-  arc[4]="m86_64" ; pkg[4]="$sf/$pref-mac-x86_64-bin.dmg"
+  arq[0]="x86"    ; bin[0]="$rpm/i386/os/Packages/o/$pref-4.fc23.i686.rpm"
+  arq[1]="x64"    ; bin[1]="$rpm/x86_64/os/Packages/o/$pref-4.fc23.x86_64.rpm"
+  arq[2]="w86"    ; bin[2]="$sf/$pref-windows-vc-x86-bin.zip"
+  arq[3]="w64"    ; bin[3]="$sf/$pref-windows-vc-x64-bin.zip"
+  arq[4]="m86_64" ; bin[4]="$sf/$pref-mac-x86_64-bin.dmg"
 
   typeset -A cls # classes de arquitetura
   cls[x86]="i386"
@@ -51,9 +52,9 @@
 
   echo -e "$BLD\t$(LC_TIME=C date +'%Y/%m/%d (%a) %H:%M:%S %Z')" >> build-history
 
-  mkdir -p $MAJ
+  mkdir -p build/$MAJ
   (
-    cd $MAJ
+    cd build/$MAJ
 
     touch v$MAJ
 
@@ -63,16 +64,16 @@
       mkdir -p  $i
     done
 
-    mkdir -p .pkg
+    mkdir -p .bin
     (
-      cd .pkg
+      cd .bin
 
-      for i in $(seq ${#pkg[*]})
+      for i in $(seq ${#bin[*]})
       do
 
            n=$((i-1))
-         url=${pkg[$n]}
-        arch=${arc[$n]}
+         url=${bin[$n]}
+        arch=${arq[$n]}
 
         echo ${url##*/}
 
@@ -109,7 +110,7 @@
 
       done
 
-    ) # .pkg
+    ) # .bin
 
     # ldd bin/openmsx-0.11.0-4.fc23.i686 | grep 'not found'
     # # usr/bin/openmsx: /usr/lib/i386-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.21 not found (required by usr/bin/openmsx)
@@ -123,9 +124,9 @@
     # strings lib-i386/libstdc++.so.6 | grep GLIBC
     # # GLIBCXX_3.4.21
 
-    mkdir -p .dep
+    mkdir -p .lib
     (
-      cd .dep
+      cd .lib
 
       for class in x86 x64
       do
@@ -158,14 +159,14 @@
 
       done
 
-    ) # .dep
+    ) # .lib
 
     ARCH=$(uname -m | grep -q x86_64 && echo x64 || echo x86)
 
     ln -nfs lib-$ARCH lib
 
-    bpath=$PWD/$MAJ/bin
-    lpath=$PWD/$MAJ/lib
+    bpath=$PWD/build/$MAJ/bin
+    lpath=$PWD/build/$MAJ/lib
 
     export            PATH=$PATH:$bpath
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$lpath
