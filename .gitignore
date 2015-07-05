@@ -1,3 +1,16 @@
+# <http://git-scm.com/docs/gitignore>
+
+# ignore script generated openmsx distribution directory
 /dipohlo/0.*/
+
+# ignore dipohlo logotype while it is not defined
 /dipohlo/logo/
+
+# ignore vim swap files
 .*.swp
+
+# ingnore rom files, except my dumped hotlogo.rom
+.rom
+!hotlogo.rom
+
+# EOF
