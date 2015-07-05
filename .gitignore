@@ -1,8 +1,5 @@
 # <http://git-scm.com/docs/gitignore>
 
-# ignore script generated openmsx distribution directories
-/dipohlo/build/0.*/
-
 # ignore dipohlo logotype while it is not defined
 /dipohlo/logo/
 
