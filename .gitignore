@@ -10,7 +10,7 @@
 .*.swp
 
 # ingnore rom files, except my dumped hotlogo.rom
-.rom
+*.rom
 !hotlogo.rom
 
 # EOF
