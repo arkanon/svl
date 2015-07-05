@@ -1,0 +1,191 @@
+diff -ru scripts-ori/load_icons.tcl scripts/load_icons.tcl
+--- scripts-ori/load_icons.tcl	2010-09-18 15:01:07.000000000 -0300
++++ scripts/load_icons.tcl	2011-07-29 12:58:17.535673059 -0300
+@@ -285,7 +285,7 @@
+ }
+ 
+ # Available icons. Icons are also drawn in this order (by default)
+-set icon_list [list "led_power" "led_caps" "led_kana" "led_pause" "led_turbo" "led_FDD" \
++set icon_list [list "led_power" "led_caps" "led_code" "led_pause" "led_turbo" "led_FDD" \
+                   "pause" "throttle" "mute" "breaked"]
+ 
+ # create OSD widgets
+diff -ru scripts-ori/osd_menu.tcl scripts/osd_menu.tcl
+--- scripts-ori/osd_menu.tcl	2010-09-18 15:01:07.000000000 -0300
++++ scripts/osd_menu.tcl	2011-07-29 12:58:26.536463085 -0300
+@@ -198,8 +198,8 @@
+ 	uplevel #0 $cmd
+ }
+ 
+-user_setting create string osd_rom_path "OSD Rom Load Menu Last Known Path" $env(OPENMSX_USER_DATA)
+-user_setting create string osd_disk_path "OSD Disk Load Menu Last Known Path" $env(OPENMSX_USER_DATA)
++user_setting create string osd_rom_path "OSD Rom Load Menu Last Known Path" $env(OPENMSX_SYSTEM_DATA)/software
++user_setting create string osd_disk_path "OSD Disk Load Menu Last Known Path" $env(OPENMSX_SYSTEM_DATA)/software
+ if ![file exists $::osd_rom_path] {
+ 	# revert to default (should always exist)
+ 	unset ::osd_rom_path
+@@ -754,14 +754,14 @@
+ 
+ proc menu_create_ROM_list { path } {
+ 	return [prepare_menu_list [concat "--eject--" [ls $path "rom,zip,gz"]] \
+-	                          10 \
++	                          22 \
+ 	                          { execute menu_select_rom
+ 	                            font-size 8
+ 	                            border-size 2
+ 	                            width 200
+ 	                            xpos 100
+-	                            ypos 120
+-	                            header { text "ROMS  $::osd_rom_path"
++	                            ypos 20
++	                            header { text "ROMS  [ lindex [ split $::osd_rom_path / ] [ expr { [ llength [ split $::osd_rom_path / ] ] - 1 } ] ]"
+ 	                                     font-size 10
+                                              post-spacing 6 }}]
+ }
+@@ -788,14 +788,14 @@
+ 
+ proc menu_create_disk_list { path } {
+ 	return [prepare_menu_list [concat "--eject--" [ls $path "dsk,zip,gz,xsa"]] \
+-	                          10 \
++	                          22 \
+ 	                          { execute menu_select_disk
+ 	                            font-size 8
+ 	                            border-size 2
+ 	                            width 200
+ 	                            xpos 100
+-	                            ypos 120
+-	                            header { text "Disks  $::osd_disk_path"
++	                            ypos 30
++	                            header { text "Disks  [ lindex [ split $::osd_disk_path / ] [ expr { [ llength [ split $::osd_disk_path / ] ] - 1 } ] ]"
+ 	                                     font-size 10
+ 	                                     post-spacing 6 }}]
+ }
+@@ -877,7 +877,7 @@
+ }
+ 
+ proc menu_loadstate_select { item } {
+-	set png $::env(OPENMSX_USER_DATA)/../savestates/${item}.png
++	set png $::env(OPENMSX_USER_DATA)/savestates/${item}.png
+ 	catch {osd create rectangle "preview.image" -relx 0.05 -rely 0.05 -w 80 -h 60 -image $png}
+ }
+ 
+@@ -906,7 +906,7 @@
+ 	set existing [list_savestates]
+ 	set i 1
+ 	while 1 {
+-		set name [format "savestate%04d" $i]
++		set name [format "$::env(ROM_PREFIX)-stt-%04d" $i]
+ 		if {[lsearch $existing $name] == -1} {
+ 			return $name
+ 		}
+diff -ru scripts-ori/savestate.tcl scripts/savestate.tcl
+--- scripts-ori/savestate.tcl	2010-09-18 15:01:07.000000000 -0300
++++ scripts/savestate.tcl	2011-07-29 12:58:33.085037843 -0300
+@@ -5,7 +5,7 @@
+ proc savestate_common { name } {
+ 	uplevel {
+ 		if {$name == ""} { set name "quicksave" }
+-		set directory [file normalize $::env(OPENMSX_USER_DATA)/../savestates]
++		set directory [file normalize $::env(OPENMSX_USER_DATA)/savestates]
+ 		set fullname [file join $directory ${name}.xml.gz]
+ 		set png [file join $directory ${name}.png]
+ 	}
+@@ -38,7 +38,7 @@
+ 
+ # helper proc to get the raw savestate info
+ proc list_savestates_raw {} {
+-	set directory [file normalize $::env(OPENMSX_USER_DATA)/../savestates]
++	set directory [file normalize $::env(OPENMSX_USER_DATA)/savestates]
+ 	set results [list]
+ 	foreach f [glob -tails -directory $directory -nocomplain *.xml.gz] {
+ 		set name [file rootname [file rootname $f]]
+@@ -162,11 +162,11 @@
+ 
+ # keybindings
+ if {$tcl_platform(os) == "Darwin"} {
+-	bind_default META+S savestate
+ 	bind_default META+R loadstate
++	bind_default META+S savestate
+ } else {
+-	bind_default ALT+F8 savestate
+-	bind_default ALT+F7 loadstate
++	bind_default CTRL+F4 loadstate
++	bind_default CTRL+F5 savestate
+ }
+ 
+ namespace export savestate
+diff -ru scripts-ori/session_management.tcl scripts/session_management.tcl
+--- scripts-ori/session_management.tcl	2010-09-18 15:01:07.000000000 -0300
++++ scripts/session_management.tcl	2011-07-29 12:58:52.250719896 -0300
+@@ -51,14 +51,14 @@
+ set_tabcompletion_proc delete_session [namespace code tabcompletion]
+ 
+ proc delete_session { name } {
+-	set directory [file normalize $::env(OPENMSX_USER_DATA)/../sessions/${name}]
++	set directory [file normalize $::env(OPENMSX_USER_DATA)/sessions/${name}]
+ 
+ 	# remove old session under this name
+ 	file delete -force -- $directory
+ }
+ 
+ proc list_sessions {} {
+-        set directory [file normalize $::env(OPENMSX_USER_DATA)/../sessions]
++        set directory [file normalize $::env(OPENMSX_USER_DATA)/sessions]
+ 	return [lsort [glob -tails -directory $directory -type d -nocomplain *]]
+ }
+ 
+@@ -74,7 +74,7 @@
+ 	
+ 	set result ""
+ 
+-	set directory [file normalize $::env(OPENMSX_USER_DATA)/../sessions/${name}]
++	set directory [file normalize $::env(OPENMSX_USER_DATA)/sessions/${name}]
+ 
+ 	# remove old session under this name
+ 	delete_session $name
+@@ -99,7 +99,7 @@
+ 	set result ""
+ 
+ 	# get all savestate files
+-	set directory [file normalize $::env(OPENMSX_USER_DATA)/../sessions/${name}]
++	set directory [file normalize $::env(OPENMSX_USER_DATA)/sessions/${name}]
+ 	set states_to_restore [glob -tails -directory $directory -nocomplain *.xml.gz]
+ 
+ 	# abort if we have nothing to restore
+diff -ru scripts-ori/trainerdefs.tclinclude scripts/trainerdefs.tclinclude
+--- scripts-ori/trainerdefs.tclinclude	2010-09-18 15:01:07.000000000 -0300
++++ scripts/trainerdefs.tclinclude	2011-07-16 04:29:00.398283492 -0300
+@@ -3034,7 +3034,7 @@
+ 	"Lives" {poke 0xe5e0 10}
+ }
+ 
+-create_trainer "H.E.R.O." {time 5} {
++create_trainer "H.E.R.O" {time 5} {
+ 	"Unlimited Bombs" {poke 0xc032 3}
+ 	"Unlimited Lives" {poke 0xc031 4}
+ 	"Unlimited Power/time" {poke 0xc174 100}
+@@ -3615,7 +3615,7 @@
+ 	"Infinite Lives" {poke 0xf10b 3}
+ }
+ 
+-create_trainer "Iriegas - Illegus" {time 1} {
++create_trainer "Iligks Episode IV - The Maze of Illegus" {time 1} {
+ 	"Can See In Dark (f2)" {poke 0xee9a 255}
+ 	"Stamina" {poke 0xee99 255}
+ 	"Time" {poke 0xee5a 0}
+@@ -6079,7 +6079,7 @@
+ 	"Next Block Always Bar" {poke 0xd28a 1}
+ }
+ 
+-create_trainer "Theseus" {time 1} {
++create_trainer "Iligks Episode I - Theseus" {time 1} {
+ 	"Enemies Are Frozen" {poke 0xedf2 255}
+ 	"Key" {poke 0xedf4 255}
+ 	"Level (0-12)" {poke 0xede7 0}
+@@ -6917,4 +6917,4 @@
+ 	"Something Else" {poke 0xe062 153}
+ }
+ 
+-# File Created in : 1.493 seconds. 732 trainers -  having 5631 pokes
+\ No newline at end of file
++# File Created in : 1.493 seconds. 732 trainers -  having 5631 pokes

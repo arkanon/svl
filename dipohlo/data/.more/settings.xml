@@ -1,0 +1,26 @@
+<!DOCTYPE settings SYSTEM 'settings.dtd'>
+
+<settings>
+
+  <settings>
+
+    <setting id="default_machine">Gradiente_Expert_DDPlus</setting>
+
+    <setting id="scale_algorithm">simple</setting>
+    <setting id="scanline">50</setting>
+    <setting id="glow">50</setting>
+    <setting id="gamma">1.00</setting>
+    <setting id="horizontal_stretch">320</setting>	<!-- 280 -->
+
+    <setting id="scale_factor">3</setting>		<!--  1   2    3 (2 melhor para tela cheia) -->
+    <setting id="consolerows">51</setting>		<!-- 17  34   51 -->
+    <setting id="consolecolumns">136</setting>		<!-- 45  90  136 -->
+    <setting id="consolebackground"></setting>		<!-- skins/ConsoleBackgroundGrey.png -->
+
+    <setting id="save_settings_on_exit">false</setting>
+
+  </settings>
+
+  <bindings/>
+
+</settings>

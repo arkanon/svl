@@ -1,0 +1,10 @@
+#!/bin/sh
+
+imgs=`ls img*[^.txt]`
+
+for img in $imgs
+do
+  cat $img | awk '{gsub("","\n");gsub("\t","\n");gsub("renda","");print$0}' > $img.txt
+  rm $img
+done
+

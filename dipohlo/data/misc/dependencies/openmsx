@@ -1,0 +1,38 @@
+# vim: ts=55
+
+# reg
+# juntion
+# cygpath
+# openmsx-bin
+
+basename
+bash
+cat
+cp
+cut
+date
+diff
+dirname
+du
+echo
+file
+find
+getopt
+grep
+head
+ln
+locale
+ls
+md5sum
+mkdir
+mv
+printf
+readlink
+rm
+rmdir
+sed
+stat
+tail
+tr
+
+# EOF

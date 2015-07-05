@@ -1,0 +1,60 @@
+
+  PC Key                 MSX Key / Function
+  ---------------------  ------------------
+
+  ' / "                  * / @
+  2 / @                  2 / "
+  8 / *                  8 / '
+  ] / }                  [ / ]
+  [ / {                  ' / `
+  ; / :                  ~ / ^
+  / / ?                  ; / :
+  \ / |                  { / }
+  R Control              / / ?
+# R Control              <DeadKey>
+
+  L Control              <Control>
+
+  R Alt                  <Code> / <Kana>
+  L Alt                  <Graph
+
+  R Super                <Yes>
+  L Super                <No>
+
+  Control + F1           toggle grabinput
+  Control + F2           toggle all trainer cheats
+  Control + F3           toggle scale (1/2)
+
+  F6                     toggle osd keyboard
+  F7                     <Select>
+  F8                     <Stop>
+
+  F9 pressed             throttle off
+  F9 released            throttle on
+
+  F10                    toggle console display
+
+  F11                    quick savestate (to   'quicksave' slot)
+  F12                    quick loadstate (from 'quicksave' slot)
+
+  Shift   + PrintScreen  capture doublesize raw screenshot
+  Control + PrintScreen  capture scaled screenshot with osd
+
+  Home                   start doublesize screen recording
+  End                    stop  doublesize screen recording
+
+  PageUp                 backward 1 sec in time, using the reverse feature
+  PageDown               forward  1 sec in time, using the reverse feature
+
+  Menu                   toggle osd menu
+  Alt + Enter            toggle full screen mode
+  ScrollLock             toggle audio mute
+
+  Pause                  pause emulation
+
+  Control + Shift + Del  machine reset
+
+  Control + Pause        quit emulator (not in Windows)
+  Alt + F4               quit emulator
+
+# EOF

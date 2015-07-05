@@ -1,0 +1,191 @@
+<html>
+
+<!--
+
+  openmsx.hta
+
+  openMSX HTML Application helper
+ 
+    Arkanon <arkanon@lsd.org.br>
+    2011/07/29 (Sex) 13:34:03 (BRS)
+
+-->
+
+<head>
+
+  <hta:application
+
+     applicationname = "Hot-Logo @ Gradiente Expert DD+ @ openMSX"
+     id              = "hotlogo"
+     version         = "0.4"
+     icon            = "7z_sfx/turtle-b.ico"
+
+     singleinstance  = "yes"
+     navigable       = "yes"
+     showintaskbar   = "no"
+     caption         = "yes"
+
+     contextmenu     = "no"
+     sysmenu         = "no"
+     maximizebutton  = "no"
+     minimizebutton  = "no"
+     scroll          = "no"
+
+     windowstate     = "normal"
+     borderstyle     = "normal"
+     border          = "thin"
+
+  >
+
+  <script language="vbscript">
+
+    Window.moveTo -2000 , -2000
+
+    Set oSh       = CreateObject("WScript.Shell")
+    Set oEnv      = oSh.Environment("System")
+    Set oFS       = CreateObject("Scripting.FileSystemObject")
+    Set oWMISrv   = GetObject("winmgmts:\\.\root\cimv2")
+
+    sTEMP         = oSh.ExpandEnvironmentStrings("%TEMP%") & "\"
+    sCmdLine      = hotlogo.CommandLine
+    sArgs         = Right( sCmdLine, Len(sCmdLine)-InStr(2, sCmdLine, """", 0) ) ' start at character 2 to avoid the first quote
+    iHide         = 0
+    iForReading   = 1
+    bInForeground = True
+    bInBackground = False
+    bForce        = True
+    bOverWrite    = True
+
+    Resize 265 , 100
+
+
+
+    Sub Window_onLoad
+
+    ' oEnv("CYGWIN") = "nodosfilewarning"
+      sWrapper       = "cygwin\bin\bash openmsx.sh" & sArgs
+      sRandFile      = sTEMP & oFS.GetTempName
+      sCmd           = "cmd /c " & sWrapper & " > " & sRandFile
+
+      oSh.Run sCmd, iHide, bInBackground
+
+      While Not oFS.FileExists(sRandFile)
+        Sleep 500
+      WEnd
+
+      Set oFile = oFS.GetFile(sRandFile)
+      sSize = oFile.Size
+
+      While sSize = 0
+        Sleep 500
+      WEnd
+
+      If sSize > 2 _
+      Then
+        sOut = oFS.OpenTextFile(sRandFile, iForReading).ReadAll
+        sOut = Replace(sOut,"<","&lt;")
+        sOut = Replace(sOut,">","&gt;")
+        out.innerHTML = "<pre>" & sOut & "</pre>"
+        Resize out.clientWidth , out.clientHeight
+        Exit Sub
+      End If
+
+      While Not oFS.FolderExists(sTEMP & "openmsx-default")
+        Sleep 500
+      WEnd
+
+      Window.moveTo -2000 , -2000
+
+      On Error Resume Next
+      While oFS.FileExists(sRandFile)
+        oFS.DeleteFile sRandFile, bForce
+        Sleep 500
+      WEnd
+      On Error GoTo 0
+
+      If sSize = 2 _
+      Then
+        Window.Close
+      End If
+
+    End Sub
+
+
+
+    Sub Resize(iW,iH)
+
+      Set colItems = oWMISrv.ExecQuery("Select * From Win32_DesktopMonitor")
+      For Each oItem in colItems
+        iHor = oItem.ScreenWidth
+        iVer = oItem.ScreenHeight
+      Next
+      iLeft = (iHor - iW) / 2
+      iTop  = (iVer - iH) / 2
+      Window.resizeTo 6+6+iW , 25+6+iH
+      Window.moveTo iLeft, iTop
+
+    End Sub
+
+
+
+    Sub Sleep (MSecs) 
+          sSleeper = sTEMP & oFS.GetTempName & ".vbs"
+      Set oSleeper = oFS.CreateTextFile(sSleeper, bOverWrite)
+          oSleeper.Write "WScript.Sleep WScript.Arguments(0)"
+          oSleeper.Close
+      oSh.Run sSleeper & " " & MSecs, iHide, bInForeground
+      oFS.DeleteFile sSleeper, bForce
+    End Sub
+
+
+
+  </script>
+
+
+
+  <style type="text/css">
+
+    body
+    {
+      margin: 0;
+      background: rgb(212,208,200);
+    }
+
+    table
+    {
+      width: 265 px;
+      height: 100 px;
+    }
+
+    td
+    {
+      text-align: center;
+      font-size: 20pt;
+      font-weight: bold;
+    }
+
+    #out
+    {
+      position: absolute;
+    }
+
+    #out pre
+    {
+      padding: 16px 16px 0 16px;
+    }
+
+  </style>
+
+  <title>Hot-Logo @ Gradiente Expert DD+ @ openMSX</title>
+
+</head>
+
+<body>
+
+<div id="out">
+  <table><tr><td>Aguarde...</td></tr></table>
+</div>
+
+</body>
+
+</html>

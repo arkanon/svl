@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE softwaredb SYSTEM "softwaredb1.dtd">
+
+<softwaredb xml:lang="en" timestamp="1394013344">
+
+<!-- Credits -->
+<![CDATA[
+The systemromdb.xml file contains information about system rom mapper types
+]]>
+
+<!-- MSX Rom Info -->
+
+<software>
+	<title xml:lang="en">Gradiente Expert 1.1/Plus/DDPlus MSX1 Basic + Bios</title>
+	<system>MSX</system>
+	<company>Microsoft</company>
+	<year>1985</year>
+	<country>BR</country>
+		<dump><original value="false">translated</original><systemrom><type>Normal</type><hash algo="sha1">d6720845928ee848cfa88a86accb067397685f02</hash></systemrom></dump>
+</software>
+
+<software>
+	<title xml:lang="en">National CF-3300 - Gradiente Expert DDPlus Disk-Basic</title>
+	<system>MSX</system>
+	<company>National</company>
+	<year>1985</year>
+	<country>JP</country>
+		<dump><original value="false">translated</original><systemrom><type>MB8877A</type><hash algo="sha1">f1525de4e0b60a6687156c2a96f8a8b2044b6c56</hash></systemrom></dump>
+</software>
+
+</softwaredb>
+
+<!--
+Roms in this XML file:20
+Created on 2014/03/05 (Wed) 06:55:44 (BRS)
+ -->

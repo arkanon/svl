@@ -1,0 +1,5 @@
+
+sudo mount -t tmpfs none openmsx-capture -o size=64m
+sudo chown $USER.$USER openmsx-capture
+sudo chmod 755 openmsx-capture
+

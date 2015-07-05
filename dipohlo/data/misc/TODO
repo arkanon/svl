@@ -1,0 +1,16 @@
+TODO
+
+ 2011/07/29 (Sex) 14:00:14 (BRS)
+
+ - colocar o block de vbs no inicio do hta
+ - testar se arq temporario tem tamanho 0
+ - esconder a janela no inicio e so mostrar apos estar dimensionada e colorida de cinza
+ - usar a variavel TEMP para colocar o output no temp do usuario e nao do cygwin
+ - usar junction points em vez de links em .openMSX para -capture no cygwin
+ - corrigir o nao uso de OPENMSX_USER_DATA nos scripts tcl
+ - arrumar a data do .hta, .tcl e .sh
+   arquivo de captura de impressao
+   fechar a janela de 'aguarde' se rodou o emulador
+   acertar o cfg do 7z sfx para executar o hta
+
+# EOF

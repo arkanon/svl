@@ -1,0 +1,240 @@
+# /etc/profile
+
+# Arkanon <arkanon@lsd.org.br>
+#
+# 2014/03/07 (Fri) 00:47:06 (BRS)
+# 2014/02/21 (Fri) 03:38:27 (BRS)
+
+
+
+  export  HOME=/
+
+
+
+# export SHELL=cygwin
+  export  PATH=/cygdrive/c/windows/system32:/cygdrive/c/windows:/cygdrive/c/windows/system32/wbem
+  export  PATH=/usr/local/bin:/usr/bin:/bin:$PATH
+  export  PATH=/usr/local/sbin:/usr/sbin:/sbin:$PATH
+  export  PATH=.:$PATH
+
+
+
+# locale -a
+  loc="pt_BR"
+# utf=".utf8"
+# sudo locale-gen en_US$utf
+# sudo dpkg-reconfigure locales
+
+  unset LC_ALL # Its value will override all the LC_* variable (but not LANG). After setting LC_ALL, modifications to any LC_* variables are not permitted.
+               # In general, it is then recommended to leave LC_ALL unset, set instead LANG, and change individual LC_* variables to suit your needs.
+
+  export                 LANGUAGE="$loc$utf"
+  export                     LANG="$loc$utf" # Set the value of all LC_* variables which are not explicitely set (those already set are not changed).
+                                             # Also, any LC_* variable can be modified after setting LANG.
+
+  export               LC_ADDRESS="$loc$utf"
+  export               LC_COLLATE="C"        # Collation order used for comparing and sorting
+  export        LC_IDENTIFICATION="$loc$utf"
+  export           LC_MEASUREMENT="$loc$utf"
+  export              LC_MONETARY="$loc$utf" # Monetary formats
+  export                  LC_NAME="$loc$utf"
+  export                 LC_PAPER="$loc$utf" # Paper format
+  export             LC_TELEPHONE="$loc$utf"
+  export                 LC_CTYPE="$loc$utf" # Character classification and case conversion. Also indicates the language which should be used with XIM
+  export              LC_MESSAGES="$loc$utf" # Formats of informative and diagnostic messages and interactive responses (also for graphical user interfaces)
+  export               LC_NUMERIC="$loc$utf" # Non-monetary numeric formats
+  export                  LC_TIME="$loc$utf" # Date and time formats
+  export                       TZ="/etc/tz/Brazil/East"
+
+
+
+# locale -m
+  charset=UTF-8
+# charset=ISO-8859-1
+  export                     LESS=-MRS      # NF
+  export                  LESSKEY=/etc/lesskey
+  export                 LESSOPEN="|lesspipe.sh %s"
+  export              LESSCHARSET=$charset
+  export         GROFF_TYPESETTER=$charset
+  export          LESS_TERMCAP_mb=$'\e[01;31m'     # red          begin blinking
+  export          LESS_TERMCAP_md=$'\e[01;33m'     # yellow       begin bold
+  export          LESS_TERMCAP_me=$'\e[0m'         #              end   mode
+  export          LESS_TERMCAP_so=$'\e[01;44;33m'  # blue/yellow  begin standout-mode (info box)
+  export          LESS_TERMCAP_se=$'\e[0m'         #              end   standout-mode
+  export          LESS_TERMCAP_us=$'\e[01;32m'     # green        begin underline
+  export          LESS_TERMCAP_ue=$'\e[0m'         #              end   underline
+  unset charset
+
+  export                IGNOREEOF=2	# logouts with ^D pressed 3 times
+# export                    TMOUT=300	# automaticaly logs out if idle is 300s (0 for never)
+  export             PERL_BADLANG=0
+# export        ALSA_OUTPUT_PORTS=128:0
+
+# export                 RCX_PORT=/dev/ttyS0
+
+  export                 MANPAGER="most -s"
+# export                    PAGER="bash -c \"col -b -x | $FS/bin/vi -R -S /etc/vim/man.vim -\"" # <http://vim.wikia.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix>
+
+  {
+    export                 HISTFILE=~/.history
+    export             HISTFILESIZE=5000000
+    export                 HISTSIZE=5000000
+  } &> /dev/null
+
+  export           HISTTIMEFORMAT="%Y/%m/%d %a %T %Z  "
+  export command_oriented_history=1				# bash attempts to save all lines of a multiple-line command in the same history entry. This allows easy re-editing of multi-line commands
+  export           PROMPT_COMMAND="history -a"			# append the "new" history lines (history lines entered since the beginning of the current bash session) to the history file.
+# export           PROMPT_COMMAND="history -n; $PROMPT_COMMAND"	# read the history lines not already read from the history file into the current history list. These are lines appended to the history file since the beginning of the current bash session.
+# export               HISTIGNORE="pwd:ls:ls -ltr:"		# patterns used to decide which command lines should be saved on the history list
+# export              HISTCONTROL="ignoredups"			# values controlling how commands are saved on the history list
+				# ignorespace			# lines which begin with a space character are not saved in the history list
+				# ignoredups			# lines matching the previous history entry to not be saved
+				# ignoreboth			# shorthand for ignorespace and ignoredups
+				# erasedups			# all previous lines matching the current line to be removed from the history list before that line is saved.
+
+  [ "$DISPLAY" ] && xhost +SI:localuser:root
+
+  shopt -s checkwinsize			# bash checks the window size after each command and, if necessary, updates the values of LINES and COLUMNS
+  shopt -s histappend			# the history list is appended to the file named by the value of the HISTFILE variable when the shell exits, rather than overwriting the file
+  shopt -s cmdhist			# bash attempts to save all lines of a multiple-line command in the same history entry. This allows easy re-editing of multi-line commands
+  shopt -s lithist			# If the cmdhist option is enabled, multi-line commands are saved to the history with embedded newlines rather than using semicolon separators where possible
+
+  # if readline is being used
+  shopt -s hostcomplete			# bash will attempt to perform hostname completion when a word containing a @ is being completed. This is enabled by default
+  shopt -s histreedit			# a user is given the opportunity to re-edit a failed history substitution
+  shopt -s histverify			# the results of history substitution are not immediately passed to the shell parser. Instead, the resulting line is loaded into the readline editing buffer, allowing further modification
+  shopt -s no_empty_cmd_completion	# bash will not attempt to search the PATH for possible completions when completion is attempted on an empty line
+
+  # Set some vars read-only
+  typeset -r HISTFILE HISTFILESIZE HISTSIZE
+
+  umask 0002				# default mode = 0664/0775
+# biff  y
+  mesg  y
+# stty  echo				# commente because locks WM startup in X
+
+  ulimit -c 0				# disable coredumps creation
+# ulimit -u 64				# limits the maximum number of processes available to a single user
+
+  set -o noclobber			# prevents overwrite of files with cp
+  set -o notify				# report the status of terminated background jobs immediately
+
+  # Set TERM to linux for unknown type or unset variable:
+  [ "$TERM" = "" -o "$TERM" = "unknown" ] && TERM=linux
+
+
+
+# [ls_options]
+  ls --help 2>&1 | grep -q group-directories-first && export LS_GDF="--group-directories-first"
+  export LS_OPTIONS='-lapbviT0 --color=always --time-style="+%Y/%m/%d %a %T %Z"'
+  export SL_OPTIONS='-lapbvT0  --color=always --time-style=+'
+
+# [ls_colors]
+  eval $(dircolors -b)
+  [ -f /etc/DIR_COLORS   ] && eval $(dircolors -b /etc/DIR_COLORS)
+  [ -f $HOME/.dir_colors ] && eval $(dircolors -b $HOME/.dir_colors)
+
+
+
+# [functions]
+
+  ps()
+  {
+    ps=/bin/ps
+    format="o start,tty,user,rss,pid,cmd"
+    if [ $# = 0 ]
+    then
+      $ps fwwx $format
+    else
+      [ "$1" = a ] && $ps fwwxa $format || $ps fww $format U $1
+    fi
+  }
+
+  sl()
+  {
+    BLOCK_SIZE=\'1 ls $SL_OPTIONS $LS_GDF $* | cut -c12- | sed "/^$/d"
+  # LC_NUMERIC=en_US$utf BLOCK_SIZE=\'1 ls $SL_OPTIONS $LS_GDF $* | cut -c12- | sed "/^$/d"
+  }
+
+  sla()
+  {
+    BLOCK_SIZE=\'1 ls $SL_OPTIONS         $* | cut -c12- | sed "/^$/d"
+  # LC_NUMERIC=en_US$utf BLOCK_SIZE=\'1 ls $SL_OPTIONS         $* | cut -c12- | sed "/^$/d"
+  }
+
+  prompt()
+  {
+
+    local   black="\[\e[1;30m\]"
+    local     red="\[\e[1;31m\]"
+    local   green="\[\e[1;32m\]"
+    local  yellow="\[\e[1;33m\]"
+    local    blue="\[\e[1;34m\]"
+    local magenta="\[\e[1;35m\]"
+    local    cyan="\[\e[1;36m\]"
+    local   white="\[\e[1;37m\]"
+    local     off="\[\e[0m\]"
+
+    local  c__def=$red
+    local  c_numb=$red
+    local  c_user=$green
+    local  c_host=$yellow
+    local  c__tty=$cyan
+    local  c_path=$white
+
+    local char at tat
+
+    if [ "$(id -u)" = "0" ]
+    then
+      char="#"
+        at=""
+       tat=""
+    else
+      char="$"
+        at="$c_user\u$c__def@"
+       tat="\u@"
+    fi
+
+    local  ab='['
+    local  fe=']'
+#   local tty=t$(tty | awk -F "tty" '{print$2}') && [ "$tty" = "t" ] && tty=p$(tty | awk -F "/" '{print$NF}')
+    local tty=$(tty | cut -d/ -f3-)
+    # \!  history number of current command
+    # \$  # for UID=0  and  $ othewise
+    # \h  hostname
+    # \s  name of shell
+    # \t  time
+    # \u  username
+    # \w  working directory
+    # \W  basename of working direktory
+    local  title="\[\e]0;$tat\h$ab$tty$fe\w\a\]"
+    local prompt="$c_numb\! $at$c_host\h$c__def$ab$c__tty$tty$c__def$fe$c_path\w$c__def$char$off "
+    echo "$TERM" | grep -qi xterm && echo "$title$prompt" || echo "$prompt"
+
+  }
+
+  export PS1=$(prompt)
+
+
+
+# [aliases]
+
+  alias     l="BLOCK_SIZE=\'1 ls $LS_OPTIONS $LS_GDF"
+  alias    la="BLOCK_SIZE=\'1 ls $LS_OPTIONS"
+  alias watch="watch -cbn1"
+  alias cgrep="grep --color=always"
+  alias     h="history"
+  alias    du="time du -chs"
+  alias    df="LC_MESSAGES=C df -haT --total" # --sync"
+  alias   mnt="(echo FileSystem MountPoint Type Options; mount | cut -d\  -f1,3,5,6 | tr -d '()') | column -t"
+  alias    wt="wordtrans"
+  alias  time="/usr/bin/time -f 'ELAPSED TIME: %E'"
+  alias  lynx="lynx -cfg=$HOME/.lynxrc"
+
+
+
+cd /
+
+
+
+# EOF

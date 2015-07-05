@@ -1,0 +1,415 @@
+#!/bin/bash
+
+  # openMSX 0.8.0
+
+  export        PATH=/bin:$PATH
+
+  if [ "$TERM" != "cygwin" ]
+  then
+   export LC_MESSAGES=$(locale -a | grep pt_BR | head -n1)
+   TEMP="/tmp"
+  fi
+
+     app="Hot-Logo @ Gradiente Expert DD+ @ openMSX @ Linux & CygWin"
+  author="Arkanon"
+   email="arkanon@lsd.org.br"
+
+  history=(
+            "0.4	2011/07/29 (Sex) 18:56:27 (BRS)"
+            "0.3	2011/07/23 (Sáb) 10:39:33 (BRS)"
+            "0.2	2011/07/20 (Qua) 07:01:21 (BRS)"
+            "0.1	2009/06/22 (Seg) 22:18:00 (BRS)"
+          )
+
+     def_rom="hotlogo.rom"
+    def_disk="disk"
+    def_capt="openmsx-capture"
+  def_script="openmsx.tcl"
+     tmpdisk="openmsx-disk"
+      output="$TEMP/openmsx-output"
+      md5sum="$TEMP/openmsx-md5"
+
+
+
+  this=$0
+  [ $this = -bash ] && this=${BASH_SOURCE[0]}
+  this=$(basename "$this")
+
+
+
+  shortopts="c:d:f:r:s:DFhRv$EXTRA_OPT"
+
+   try_text="Tente '$this -h' para mais informacoes."
+
+  help_text="
+$app
+
+$author <$email>
+v$(IFS=$'\x09'; set ${history[0]}; echo $1 - $2)
+
+Uso: $this [opcoes...]
+
+Opcoes:
+   -c <diretorio para armazenar videos|telas|estados capturados>
+        DEF: $def_capt/ no diretorio de trabalho
+   -d <diretorio com funcao de disquete>
+        DEF: $def_disk/ embutido nesse executavel
+   -f <arquivo dentro do diretorio disquete a ser carregado automaticamente>
+        DEF: nenhum. O prompt ficara a espera de que seja digitado um.
+        Se o arquivo for apresentado com um caminho, sera criado um disco
+           temporario apenas com esse arquivo em $tmpdisk/ no diretorio de
+           trabalho. Senao, sera procurado entre os arquivps disponiveis no
+           diretorio definido como disquete.
+   -r <arquivo rom> (digitar a extensao eh opcional)
+        DEF: $def_rom embutido nesse executavel
+        Se a rom for apresentada com um caminho, sera procurada nesse caminho.
+           Senao, sera procurada entre as roms disponiveis no executavel.
+   -s <script tcl de automacao do openMSX>
+        DEF: $def_script embutido nesse executavel
+
+   -D dump dos valores das variaveis usadas (nao executa o emulador)
+   -F lista os arquivos do diretorio disquete embutido no executavel
+   -R lista as roms embutidas no executavel
+
+   -h este texto de ajuda
+   -v versao do wrapper e do openMSX$EXTRA_HELP"
+
+
+
+                  pwd=$(readlink -m "$PWD")
+
+         OPENMSX_ROOT=$(readlink -m "$(dirname "${BASH_SOURCE[0]}")")
+  OPENMSX_SYSTEM_DATA=$OPENMSX_ROOT/share
+      LD_LIBRARY_PATH=$OPENMSX_ROOT/lib
+
+    OPENMSX_USER_DATA=$HOME/.openMSX
+  [ "$TERM" = "cygwin" ] && OPENMSX_USER_DATA=$(cat /proc/registry/HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Explorer/Shell\ Folders/Personal)/openMSX
+
+             omsx_bin=$OPENMSX_ROOT/openmsx-bin
+  [ "$TERM" = "cygwin" ] && omsx_bin=$omsx_bin.exe
+
+            export TZ=$OPENMSX_ROOT/cygwin/etc/tz/Brazil/East
+
+
+       opts=$(getopt -n "$this" -o $shortopts -- "$@")
+
+  [ $? != 0 ] && echo "$try_text" && exit
+
+  eval set -- "$opts"
+
+  while [ $# -ge 1 ]
+  do
+    case "$1" in
+      -c )    capt=$(readlink -f -- "$2"); shift;;
+      -d )    DISK=$(readlink -f -- "$2"); shift;;
+      -f )    FILE=$2; shift;;
+      -r ) try_rom=$2; shift;;
+      -s )  script=$2; shift;;
+      -D )    dump=1; show=1;;
+      -F )   files=1; show=1;;
+      -h )    help=1; show=1;;
+      -R )    roms=1; show=1;;
+      -v ) version=1; show=1;;
+      -- ) shift; break;;
+       * ) break;;
+    esac
+    shift
+  done
+
+
+
+  [ "$help" ] && echo -e "$help_text"
+
+
+
+  if [ "$version" ]
+  then
+    omsx_date=$(date -d "$(stat -c %y "$omsx_bin")" +"%Y/%m/%d (%a) %H:%M:%S (%Z)")
+     omsx_ver=$("$omsx_bin" -v 2>/dev/null | head -n1 | cut -d\  -f2 | tr -d "")
+    cat << EOT
+
+openMSX $omsx_ver	$omsx_date
+wrapper	${history[0]}
+EOT
+  fi
+
+
+
+  [ "$capt" ] || capt="$pwd/$def_capt"
+  out=$(mkdir -p "$capt" 2>&1) || erro="${erro}Erro criando diretorio de captura: $capt\n($out)\n"
+
+
+
+  [ "$DISK" ] || DISK="$OPENMSX_ROOT/$def_disk"
+  out=$(mkdir -p "$DISK" 2>&1) || erro="${erro}Erro criando diretorio disquete: $DISK\n($out)\n"
+
+
+
+  if [ "$script" ]
+  then
+    [ ! -e "$script" ] && erro="${erro}Script de inicializacao nao encontrado: $script\n"
+  else
+    script="$OPENMSX_ROOT/$def_script"
+  fi
+
+
+
+  # {
+  #   .distro/openmsx -f /tmp/hello.bas      -D -F # arquivo isolado
+  #   .distro/openmsx -f /tmp/hello.ba       -D -F # arquivo isolado
+  #   .distro/openmsx -f hello.bas           -D -F # arquivo no bin
+  #   .distro/openmsx -f hello.ba            -D -F # arquivo no bin
+  #   .distro/openmsx -f hello.bas -d ./disk -D -F # arquivo no disk
+  #   .distro/openmsx -f hello.ba  -d ./disk -D -F # arquivo no disk
+  # } | grep -i -e disk -e file -e arq -e hello
+
+  # - 31 2011/07/17 Dom 02:15:04 BRS hello.bas
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/openmsx-disk
+  # FILE hello.bas
+
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/openmsx-disk
+  # FILE hello.ba
+  # Arquivo nao encontrado: /tmp/hello.ba
+
+  # - 31 2011/07/17 Dom 02:15:04 BRS hello.bas
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/disk
+  # FILE hello.bas
+
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/disk
+  # FILE hello.ba
+  # Arquivo nao encontrado: hello.ba no diretorio disquete (/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/disk)
+
+  # - 31 2011/07/29 Sex 16:33:57 BRS hello.bas
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/disk
+  # FILE hello.bas
+
+  # DISK /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/disk
+  # FILE hello.ba
+  # Arquivo nao encontrado: hello.ba no diretorio disquete (/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/disk)
+
+  if [ "$FILE" ]
+  then
+     dir=$( dirname "$FILE")
+    base=$(basename "$FILE")
+    if [ ! -e "$DISK/$FILE" -o "$base" != "$FILE" ]
+    then
+      if [ "$base" != "$FILE" ]
+      then
+        d1=$pwd
+        d2=$DISK
+        if [ "$d1" != "$d2" ]
+        then
+          tmpdisk="$pwd/$tmpdisk"
+          mkdir -p "$tmpdisk"
+          [ -e "$FILE" ] && cp -a "$FILE" "$tmpdisk"
+          find "$tmpdisk" -type f -exec md5sum "{}" \; >| "$md5sum"
+          DISK=$tmpdisk
+        fi
+      fi
+    fi
+    FILE=$base
+    if [ ! -e "$DISK/$FILE" ]
+    then
+      erro="${erro}Arquivo nao encontrado: "
+      [ "$d1" != "$d2" ] && erro="${erro}$dir/"
+      erro="${erro}$FILE"
+      if [ "$d1" = "$d2" ]
+       then
+         erro="${erro} no diretorio disquete ($DISK)"
+       fi
+      erro="${erro}\n\n"
+    fi
+  fi
+
+
+
+  # {
+  #   .distro/openmsx -r    ./existe.rom -D
+  #   .distro/openmsx -r    ./existe     -D
+  #   .distro/openmsx -r      existe.rom -D
+  #   .distro/openmsx -r      existe     -D
+  #   .distro/openmsx -r ./naoexiste.rom -D
+  #   .distro/openmsx -r ./naoexiste     -D
+  #   .distro/openmsx -r   naoexiste.rom -D
+  #   .distro/openmsx -r   naoexiste     -D
+  #   .distro/openmsx -r        hero.rom -D
+  #   .distro/openmsx -r        hero     -D
+  #   .distro/openmsx -r       basic.rom -D
+  #   .distro/openmsx -r       basic     -D
+  # } | grep ROM
+
+  #        ROM	./existe.rom
+  # ROM_PREFIX	existe
+
+  #        ROM	./existe.rom
+  # ROM_PREFIX	existe
+
+  #        ROM	existe.rom
+  # ROM_PREFIX	existe
+
+  #        ROM	existe.rom
+  # ROM_PREFIX	existe
+
+  #        ROM	./naoexiste.rom
+  # ROM_PREFIX	naoexiste
+  # Arquivo ROM nao encontrado: ./naoexiste.rom
+
+  #        ROM	./naoexiste.rom
+  # ROM_PREFIX	naoexiste
+  # Arquivo ROM nao encontrado: ./naoexiste.rom
+
+  #        ROM	/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/naoexiste.rom
+  # ROM_PREFIX	naoexiste
+  # Arquivo ROM nao encontrado: /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/naoexiste.rom
+
+  #        ROM	/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/naoexiste.rom
+  # ROM_PREFIX	naoexiste
+  # Arquivo ROM nao encontrado: /export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/naoexiste.rom
+
+  #        ROM	/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/hero.rom
+  # ROM_PREFIX	hero
+
+  #        ROM	/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/hero.rom
+  # ROM_PREFIX	hero
+
+  #        ROM	basic.rom
+  # ROM_PREFIX	basic
+
+  #        ROM	/export/data/arkanon-www/svl.lsd.org.br/appsweb/svl/msx/emu/linux/.distro/share/software/basic.rom
+  # ROM_PREFIX	basic
+
+  if [ "$try_rom" ]
+  then
+    ROM=$try_rom
+    [ ! -e "$ROM" ] && [ $try_rom != "basic.rom"  ] && [ $(basename "$ROM") = "$ROM" ] && ROM="$OPENMSX_SYSTEM_DATA/software/$ROM"
+    [ ! -e "$ROM" ] && [ $try_rom != "basic.rom"  ] && [ -e "$ROM.rom" ] && ROM="$ROM.rom"
+    [ ! -e "$ROM" ] && [ $try_rom != "basic.rom"  ] && [ -e "$try_rom.rom" ] && ROM="$try_rom.rom"
+    if [ ! -e "$ROM" ]
+    then
+      [ $(basename $ROM) = $(basename "$ROM" .rom) ] && ROM="$ROM.rom"
+      [ $ROM != "basic.rom" ] && [ $try_rom != "basic.rom"  ] && [ $ROM != "basic" ] && [ $try_rom != "basic"  ] && erro="${erro}Arquivo ROM nao encontrado: $ROM\n\n"
+    else
+      rom_size=$(stat -c %s $ROM)
+      rom_type=$(file -b $ROM)
+      [ "$rom_type" != "data" ] && erro="${erro}Formato do arquivo ROM inválido: $rom_type\n\n"
+      echo $[8*2**10] $[16*2**10] $[32*2**10] | grep -q $rom_size || erro="${erro}Tamanho do arquivo ROM invalido para MSX1 (8|16|32 KiB): $rom_size\n\n"
+    fi
+  else
+    ROM="$OPENMSX_SYSTEM_DATA/software/$def_rom"
+  fi
+
+    ROM_PREFIX=$(basename "$ROM" .rom)
+  OPENMSX_DATE=$(date +%d-%m-%y)
+
+
+
+  msx_ls()
+  {
+    cd "$1"
+    export BLOCK_SIZE=\'1
+    [ "$TERM" = "cygwin" ] && color="never" || color="always"
+    ls='ls -lAgGpd --color='$color' --time-style="+%Y/%m/%d %a %T %Z" --group-directories-first'
+    {
+      echo
+      [ "$2" = ".rom" ] && echo -e "   BIOS ROM do Expert DD+             basic.rom"
+      eval "$ls" {,.[^.]}*$2 | cut -c1,13- | sed "s/^/ /"
+      printf "   TOTAL: %'d bytes\n" $(du -cbs {,.[^.]}*$2 | tail -n1 | cut -f1)
+    } 2> /dev/null
+  }
+
+  [ "$roms"  ] && msx_ls "$OPENMSX_SYSTEM_DATA/software" .rom
+  [ "$files" ] && [ -e "$DISK/$FILE" ] && msx_ls "$DISK"
+
+
+
+  if [ "$TERM" = "cygwin" ]
+  then
+           OPENMSX_ROOT=$(cygpath -m "$OPENMSX_ROOT")
+    OPENMSX_SYSTEM_DATA=$(cygpath -m "$OPENMSX_SYSTEM_DATA")
+      OPENMSX_USER_DATA=$(cygpath -m "$OPENMSX_USER_DATA")
+                   DISK=$(cygpath -m "$DISK")
+                    ROM=$(cygpath -m "$ROM")
+                 script=$(cygpath -w "$script")
+  fi
+
+
+
+  [ "$dump" ] && echo "
+                 TZ	$TZ
+    LD_LIBRARY_PATH	$LD_LIBRARY_PATH
+
+       OPENMSX_ROOT	$OPENMSX_ROOT
+  OPENMSX_USER_DATA	$OPENMSX_USER_DATA
+OPENMSX_SYSTEM_DATA	$OPENMSX_SYSTEM_DATA
+       OPENMSX_DATE	$OPENMSX_DATE
+
+               DISK	$DISK
+                ROM	$ROM
+
+         ROM_PREFIX	$ROM_PREFIX
+               FILE	$FILE
+
+                pwd	$pwd
+               capt	$capt
+             script	$script"
+
+  [ "$show" ] && echo
+
+  [ -e "$OPENMSX_USER_DATA" ] && ( [ -e "$OPENMSX_USER_DATA-original" ] && rm -r "$OPENMSX_USER_DATA" || mv "$OPENMSX_USER_DATA" "$OPENMSX_USER_DATA-original" )
+
+  mkdir -p "$OPENMSX_USER_DATA"
+
+  if [ "$TERM" = "cygwin" ]
+  then
+    {
+      reg add "HKCU\Software\Sysinternals\Junction" /f /v EulaAccepted /t REG_DWORD /d 1
+      junction "$(cygpath -w "$OPENMSX_USER_DATA/videos"     )" "$(cygpath -w "$capt")"
+      junction "$(cygpath -w "$OPENMSX_USER_DATA/screenshots")" "$(cygpath -w "$capt")"
+      junction "$(cygpath -w "$OPENMSX_USER_DATA/savestates" )" "$(cygpath -w "$capt")"
+    } > /dev/null
+  else
+    ln -s "$capt" "$OPENMSX_USER_DATA/videos"
+    ln -s "$capt" "$OPENMSX_USER_DATA/screenshots"
+    ln -s "$capt" "$OPENMSX_USER_DATA/savestates"
+  fi
+
+  export     LD_LIBRARY_PATH
+
+  export        OPENMSX_ROOT
+  export OPENMSX_SYSTEM_DATA
+  export   OPENMSX_USER_DATA
+  export        OPENMSX_DATE
+
+  export                DISK
+  export                 ROM
+  export          ROM_PREFIX
+  export                FILE
+
+  [ "$erro" ] \
+  && echo -en "$erro" \
+  || [ "$show" ] \
+     || {
+          echo "-----"
+          date +"%Y/%m/%d %a %T %Z"
+          [ "$erro" ] && echo -e "$erro" || "$omsx_bin" -script "$script"
+        } >> "$output" 2>&1
+
+  rm -r "$OPENMSX_USER_DATA"
+
+  if [ -e "$md5sum" ]
+  then
+    find "$tmpdisk" -type f -exec md5sum "{}" \; >| "$md5sum-2"
+    diff "$md5sum" "$md5sum-2" &> /dev/null && [ -e "$tmpdisk" ] && rm -r "$tmpdisk"
+    rm "$md5sum" "$md5sum-2"
+  fi
+
+  {
+    rmdir "$capt"
+    rmdir "$DISK"
+  } 2> /dev/null
+
+  [ -e "$OPENMSX_USER_DATA-original" ] && mv "$OPENMSX_USER_DATA-original" "$OPENMSX_USER_DATA"
+
+
+
+# EOF

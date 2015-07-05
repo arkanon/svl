@@ -1,0 +1,103 @@
+aprenda , :x :y
+mudepos sn :x :y
+fim
+
+aprenda borda 
+un
+mudecl :cr
+, :x0 :y0
+repita 12 [   pf :r §
+           ul pp pos §
+           un pt :r §
+           pd 30]
+fim
+
+aprenda clock :parms
+atr "x0 elemento 1 :parms
+atr "y0 elemento 2 :parms
+atr "r  elemento 3 :parms
+atr "p  elemento 4 :parms
+atr "cr elemento 5 :parms
+atr "n  elemento 6 :parms
+atr "cp  1
+atr "t  52,5
+mudepropor‡±o :p
+rem [muded‡ 0]
+borda
+relogio
+pontos
+atr "r  :r - 3
+, :x0 :y0
+liberemem
+repita :n §
+ [mudecl :cp §
+  pf :r §
+  espere :t §
+  mudecl :cr §
+  pt :r §
+  pd 6]
+mudecl :cp
+pf :r
+fim
+
+aprenda ex 
+clock [0 0] 50 1,5
+fim
+
+aprenda grave :arq
+eliminearq    :arq
+gravetudo     :arq
+fim
+
+aprenda pontos 
+atr "r :r - 5
+un , :x0 :y0
+mudecl :cp
+repita 60 [   pf :r §
+           ul pp pos §
+           un pt :r §
+           pd 6]
+ul
+fim
+
+aprenda relogio 
+atr "r  :r - 6
+un , :x0 :y0
+pf :r
+pd 90 ul
+mudecl :cr
+repita 360 §
+ [pf ¾ / 180 * :r §
+  pd 1]
+un , :x0 :y0 pe 90 ul pinte
+fim
+
+aprenda rem :linha
+fim
+
+aprenda tudo 
+tat
+dt
+mudecf 1
+atat [1 2 3]
+atr "parametros §
+[§
+ [-65  45 50 1   15 10]§
+ [ 70  10 50 1,5  8  5]§
+ [-30 -80 40 0,7  4 15]]
+atr "dc 0
+cada §
+[§
+ muded‡ :dc §
+ clock §
+  elemento quem :parametros §
+ atr "dc d‡]
+fim
+
+aprenda ¾ 
+envie 3,1415926
+fim
+
+tudo
+
+

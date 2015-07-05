@@ -1,0 +1,36 @@
+
+mkdir p
+
+cd p
+
+   mkdir a
+   mkdir b
+   
+   # create patch
+   cd a
+   
+      ln -s /usr/share/openmsx-/scripts scripts-ori
+      ln -s ../../../../share/scripts scripts
+   
+      diff -ru scripts-ori scripts >| ../b/scripts.patch
+   
+      cp -a scripts-ori/ ../b/scripts
+   
+      cd ..
+
+   # test/apply patch   
+   cd b
+   
+      diff -qr scripts ../a/scripts
+      # varias diferencas
+      
+      patch -p0 < scripts.patch 
+   
+      diff -qr scripts ../a/scripts
+      # nenhuma diferenca
+   
+      cd ..
+   
+   cd ..
+
+# EOF

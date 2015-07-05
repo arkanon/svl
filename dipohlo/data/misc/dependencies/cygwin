@@ -1,0 +1,63 @@
+# vim: ts=55
+
+c:/windows/system32/reg.exe	reg.exe
+http://download.sysinternals.com/files/junction.zip	juntion.exe
+
+cygwin/cygwin-1.7.9-1.tar.bz2	usr/bin/cygpath.exe
+
+ncurses/ncurses-5.7-18.tar.bz2	usr/bin/clear.exe
+which/which-2.20-2.tar.bz2	usr/bin/which.exe
+
+tzcode/tzcode-2010j-1.tar.bz2	usr/share/zoneinfo/Brazil/East
+terminfo/terminfo-5.7_20091114-14.tar.bz2	usr/share/terminfo/6c/linux
+terminfo/terminfo-5.7_20091114-14.tar.bz2	usr/share/terminfo/78/xterm
+terminfo/terminfo-5.7_20091114-14.tar.bz2	usr/share/terminfo/63/cygwin
+
+ncurses/libncurses10/libncurses10-5.7-18.tar.bz2	usr/bin/cygncurses-10.dll
+
+
+
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/basename.exe
+bash/bash-4.1.10-4.tar.bz2	usr/bin/bash.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/cat.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/cp.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/cut.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/date.exe
+diffutils/diffutils-2.9-1.tar.bz2	usr/bin/diff.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/dirname.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/du.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/echo.exe
+file/file-5.05-1.tar.bz2	usr/bin/file.exe
+findutils/findutils-4.5.9-2.tar.bz2	usr/bin/find.exe
+util-linux/util-linux-2.17.2-1.tar.bz2	usr/bin/getopt.exe
+grep/grep-2.6.3-1.tar.bz2	usr/bin/grep.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/head.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/ln.exe
+cygwin/cygwin-1.7.9-1.tar.bz2	usr/bin/locale.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/ls.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/md5sum.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/mkdir.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/mv.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/printf.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/readlink.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/rm.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/rmdir.exe
+sed/sed-4.2.1-1.tar.bz2	    bin/sed.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/stat.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/tail.exe
+coreutils/coreutils-8.10-1.tar.bz2	usr/bin/tr.exe
+
+
+
+attr/libattr1/libattr1-2.4.43-1.tar.bz2	usr/bin/cygattr-1.dll
+gcc4/libgcc1/libgcc1-4.5.0-1.tar.bz2	usr/bin/cyggcc_s-1.dll
+libiconv/libiconv2/libiconv2-1.13.1-2.tar.bz2	usr/bin/cygiconv-2.dll
+gettext/libintl8/libintl8-0.17-11.tar.bz2	usr/bin/cygintl-8.dll
+file/file-5.05-1.tar.bz2	usr/bin/cygmagic-1.dll
+ncursesw/libncursesw10/libncursesw10-5.7-18.tar.bz2	usr/bin/cygncursesw-10.dll
+pcre/libpcre0/libpcre0-8.02-1.tar.bz2	usr/bin/cygpcre-0.dll
+readline/libreadline7/libreadline7-6.1.2-2.tar.bz2	usr/bin/cygreadline7.dll
+cygwin/cygwin-1.7.9-1.tar.bz2	usr/bin/cygwin1.dll
+zlib/zlib-1.2.3-2.tar.bz2	usr/bin/cygz.dll
+
+# EOF
