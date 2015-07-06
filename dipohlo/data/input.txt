@@ -1,2 +1,0 @@
-esc " arquivos esc "
-carregue  
